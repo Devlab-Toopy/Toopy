@@ -13,7 +13,7 @@ import { ChatPage } from "../pages/chat/chat";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = ChatPage;
+  rootPage: any = HomePage;
 
   pages: Array<{title: string, component: any}>;
 

@@ -19,7 +19,7 @@ export class ChatPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatPage');
+    console.log(this.navParams['username']);
   }
 
 }
