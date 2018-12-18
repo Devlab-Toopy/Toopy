@@ -13,8 +13,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule} from "@angular/fire/database";
 import { AngularFireAuthModule} from '@angular/fire/auth';
-
-
 import {environment} from "../../.localenv";
 
 let config = environment.config;

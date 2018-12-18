@@ -26,10 +26,6 @@ export class ChatPage {
     }
 
     ionViewDidLoad() {
-        this.db.list('/chats').push({
-            username: this.username,
-            message: this.message
-        });
     }
 
     sendMessage(){
