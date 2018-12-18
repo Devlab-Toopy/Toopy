@@ -12,15 +12,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule} from "@angular/fire/database";
+import { AngularFireAuthModule} from '@angular/fire/auth';
 
-let config = {
-  apiKey: "AIzaSyAScAkxwNqVqj1a3WW-t946I9JIeNqrYU8",
-  authDomain: "toopy-c21e6.firebaseapp.com",
-  databaseURL: "https://toopy-c21e6.firebaseio.com",
-  projectId: "toopy-c21e6",
-  storageBucket: "toopy-c21e6.appspot.com",
-  messagingSenderId: "702733067170"
-};
+
+import {environment} from "../../.localenv";
+
+let config = environment.config;
 
 @NgModule({
   declarations: [
@@ -33,7 +30,8 @@ let config = {
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(config),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

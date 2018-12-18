@@ -1,40 +1,43 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { AlertController } from 'ionic-angular';
-import {ChatPage} from "../chat/chat";
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AngularFireAuth} from '@angular/fire/auth';
 
+/**
+ * Generated class for the HomePage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
 })
 export class HomePage {
 
-  username: string = '';
-
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
-
-  }
-
-  showAlert(title: string, message: string) {
-    const alert = this.alertCtrl.create({
-      title: title,
-      subTitle: message,
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  loginUser(){
-    if(/^[a-zA-Z0-9]+$/.test(this.username)) {
-      // all cool
-      this.navCtrl.push(ChatPage, {
-        username: this.username
-      });
-    } else {
-      this.showAlert('ERROR', 'invalid username');
+    constructor(private afAuth: AngularFireAuth, private toast: ToastController,
+                public navCtrl: NavController, public navParams: NavParams) {
     }
-  }
 
+  ionViewDidLoad(){
+    this.afAuth.authState.subscribe(data => {
+      if(data.email && data.uid){
+
+
+      this.toast.create({
+          message: 'WELCOME',
+          duration: '3000'
+      }).present();
+      }
+
+      else{
+          this.toast.create({
+              message: 'Could not find authentification',
+              duration: '3000'
+          }).present();
+      }
+
+    });
+  }
 }

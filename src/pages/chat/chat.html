@@ -1,6 +1,5 @@
 <!--
   Generated template for the ChatPage page.
-
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
@@ -22,8 +21,8 @@
 <ion-footer>
   <ion-toolbar>
     <div id="footer">
-     <ion-input type="text" [(ngModel)]="message"></ion-input>
+      <ion-input type="text" [(ngModel)]="message"></ion-input>
+      <button ion-button icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon> </button>
     </div>
   </ion-toolbar>
 </ion-footer>
-
