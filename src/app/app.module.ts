@@ -9,6 +9,12 @@ import { ChatPage } from "../pages/chat/chat";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {environment} from "../../.localenv";
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule} from "@angular/fire/database";
+
+let config = environment.config;
 
 @NgModule({
   declarations: [
@@ -20,6 +26,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(config),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
