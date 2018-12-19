@@ -27,14 +27,14 @@ export class HomePage {
 
       this.toast.create({
           message: 'WELCOME',
-          duration: '3000'
+          duration: 3000
       }).present();
       }
 
       else{
           this.toast.create({
               message: 'Could not find authentification',
-              duration: '3000'
+              duration: 3000
           }).present();
       }
 

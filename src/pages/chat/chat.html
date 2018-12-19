@@ -14,15 +14,21 @@
 
 <ion-content padding>
 
-  <div id="message"></div>
+  <div id="chatMessage">
+
+    <div class="message" *ngFor="let message of messages">
+      <div class="innerMessage" [class]="message.username == username ? 'innerMessage messageRight' : 'innerMessage messageLeft'">
+        <div class="username">{{message.username}}  :  </div>
+        <div class="content">{{message.message}}</div>
+      </div>
+    </div>
+  </div>
 
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
     <div id="footer">
-      <ion-input type="text" [(ngModel)]="message"></ion-input>
-      <button ion-button icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon> </button>
+      <div class="elem"><ion-input type="text" [(ngModel)]="message"></ion-input></div>
+      <div class="elem"><button ion-button icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon> </button></div>
     </div>
-  </ion-toolbar>
   </ion-footer>

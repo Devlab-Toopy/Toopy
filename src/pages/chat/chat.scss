@@ -1,3 +1,49 @@
 page-chat {
+  .innerMessage {
+    display: inline-block;
+    padding: 5px 10px;
+    background: color($colors, 'primary');
+    color: white;
+    border-radius: 3px;
+    margin: 5px;
 
+  }
+  .innerMessage.messageRight{
+    background: color($colors, 'secondary');
+  }
+  .elem button {
+    border-radius: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .elem {
+    position: relative;
+    min-width: 50px;
+  }
+  div#footer div.elem:first-child {
+    flex-grow: 1;
+  }
+  div#footer {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .ion-input{
+    padding-left: 15px;
+  }
+  .message:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .messageLeft {
+    float: left;
+  }
+  .messageRight {
+    float: right;
+  }
 }

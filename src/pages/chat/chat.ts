@@ -19,10 +19,13 @@ export class ChatPage {
     username: string = '';
     message: string = '';
     subscriptionMessage;
+    messages: object[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase,) {
     this.username = this.navParams.get('username');
-    // this.subscriptionMessage = this.db.object('/chats').subscribe(data => {})
+    this.subscriptionMessage = this.db.list('/chats').valueChanges().subscribe(data => {
+        this.messages = data;
+    })
   }
 
   ionViewDidLoad() {
@@ -35,6 +38,7 @@ export class ChatPage {
         }).then( () => {
             // message is sent
         });
+        this.message = '';
     }
 
 }
