@@ -20,13 +20,13 @@ export class ChatPage {
     message: string = '';
     subscriptionMessage;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase,) {
-        this.username = this.navParams.get('username');
-        // this.subscriptionMessage = this.db.object('/chats').subscribe
-    }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase,) {
+    this.username = this.navParams.get('username');
+    // this.subscriptionMessage = this.db.object('/chats').subscribe(data => {})
+  }
 
-    ionViewDidLoad() {
-    }
+  ionViewDidLoad() {
+  }
 
     sendMessage(){
         this.db.list('/chats').push({
