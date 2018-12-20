@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {User} from "../../models/user";
 import {AngularFireAuth} from '@angular/fire/auth';
 import {ChatPage} from "../chat/chat";
+import {HomePage} from "../home/home";
 
 /**
  * Generated class for the LoginPage page.
@@ -24,12 +25,12 @@ export class LoginPage {
               public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  async  login(user: User) {
+  async login(user: User) {
       try {
           const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
           console.log(result);
           if(result){
-            this.navCtrl.push(ChatPage,{
+            this.navCtrl.push(HomePage,{
                 username: this.user.email
             })
           }
