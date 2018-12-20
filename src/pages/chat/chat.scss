@@ -6,7 +6,13 @@ page-chat {
     color: white;
     border-radius: 3px;
     margin: 5px;
-
+    overflow: hidden;
+  }
+  #welcome{
+    font-size: 12px;
+    color: grey;
+    text-align: center;
+    margin-bottom: 14px;
   }
   .innerMessage.messageRight{
     background: color($colors, 'secondary');

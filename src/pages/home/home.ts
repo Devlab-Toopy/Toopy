@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {FirebaseObjectObservable} from "@angular/fire/database-deprecated";
 import {Profile} from "../../models/profile";
 
 /**

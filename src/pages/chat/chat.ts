@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import {AngularFireDatabase} from "@angular/fire/database";
 
 /**
@@ -16,29 +16,34 @@ import {AngularFireDatabase} from "@angular/fire/database";
 })
 export class ChatPage {
 
-    username: string = '';
-    message: string = '';
-    subscriptionMessage;
-    messages: object[] = [];
+  @ViewChild(Content) contentArea: Content;
+
+  username: string = '';
+  message: string = '';
+  subscriptionMessage;
+  messages: object[] = [];
+  theme: string= 'Californie';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public db: AngularFireDatabase,) {
     this.username = this.navParams.get('username');
-    this.subscriptionMessage = this.db.list('/chats').valueChanges().subscribe(data => {
+    this.subscriptionMessage = this.db.list(`/${this.theme}/chats`).valueChanges().subscribe(data => {
         this.messages = data;
+      this.contentArea.scrollToBottom();
     })
   }
 
   ionViewDidLoad() {
+
   }
 
-    sendMessage(){
-        this.db.list('/chats').push({
-            username: this.username,
-            message: this.message
-        }).then( () => {
-            // message is sent
-        });
-        this.message = '';
-    }
+  sendMessage(){
+      this.db.list(`/${this.theme}/chats`).push({
+          username: this.username,
+          message: this.message
+      }).then( () => {
+          // message is sent
+      });
+      this.message = '';
+  }
 
 }
