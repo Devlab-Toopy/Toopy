@@ -38,11 +38,11 @@ export class ChatPage {
     this.username = this.navParams.get('username');
     this.user = this.navParams.get('user');
 
-    this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
-      this.date = data;
-      console.log(data);
-    });
-    // this.channelManager.getTimer('Californie');
+    // this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
+    //   this.date = data;
+    //   console.log(data[0]);
+    // });
+    this.channelManager.getInitDate('Californie');
 
     this.subscriptionMessage = this.db.list(`/${this.theme}/chats`).valueChanges().subscribe(data => {
         this.messages = data;

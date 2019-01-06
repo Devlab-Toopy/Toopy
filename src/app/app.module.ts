@@ -15,6 +15,7 @@ import { AngularFireDatabaseModule} from "@angular/fire/database";
 import { AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from "../../.localenv";
 import { ChannelManagerProvider } from '../providers/channel-manager/channel-manager';
+import {TimerComponent} from "../components/timer/timer";
 
 let config = environment.config;
 
@@ -23,7 +24,8 @@ let config = environment.config;
     MyApp,
     HomePage,
     ListPage,
-    ChatPage
+    ChatPage,
+    TimerComponent
   ],
   imports: [
     BrowserModule,
