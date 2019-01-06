@@ -17,7 +17,7 @@ export class TimerComponent {
 
   private timerChange: Subscription;
   message: string;
-  private actualDate: string;
+  private EndDate: Date = new Date('2019-01-11T17:17:00');
   private futureString: string;
   private diff: any;
   initDate: Date = new Date('2019-01-04T17:17:00');
@@ -26,12 +26,20 @@ export class TimerComponent {
 
   }
 
-  dhms(difference) {
-    let days, hours, mins, secs;
-    days = Math.floor(difference / (60 * 60 * 1000 * 24) * 1);
-    hours = Math.floor((difference % (60 * 60 * 1000 * 24)) / (60 * 60 * 1000) * 1);
-    mins = Math.floor(((difference % (60 * 60 * 1000 * 24)) % (60 * 60 * 1000)) / (60 * 1000) * 1);
-    secs = Math.floor((((difference % (60 * 60 * 1000 * 24)) % (60 * 60 * 1000)) % (60 * 1000)) / 1000 * 1);
+  dhms(delta) {
+    let days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+
+// calculate (and subtract) whole hours
+    let hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+
+// calculate (and subtract) whole minutes
+    let mins = Math.floor(delta / 60) % 60;
+    delta -= mins * 60;
+
+// what's left is seconds
+    let secs = Math.round(delta % 60);
 
     return [
       days + 'd',
@@ -44,10 +52,11 @@ export class TimerComponent {
 
   ngOnInit() {
     Observable.interval(1000).map((x) => {
-      this.diff = Math.floor((Date.now() - this.initDate.getTime()));
+
+      this.diff = Math.abs(Date.now() - this.EndDate.getTime()) / 1000;
     }).subscribe((x) => {
 
-      this.message = this.dhms(Date.now());
+      this.message = this.dhms(this.diff);
     });
 
 
