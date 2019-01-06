@@ -14,6 +14,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule} from "@angular/fire/database";
 import { AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from "../../.localenv";
+import { ChannelManagerProvider } from '../providers/channel-manager/channel-manager';
 
 let config = environment.config;
 
@@ -29,7 +30,7 @@ let config = environment.config;
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -41,7 +42,8 @@ let config = environment.config;
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    ChannelManagerProvider,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]
 })
 export class AppModule {}
