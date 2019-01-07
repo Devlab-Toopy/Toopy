@@ -48,7 +48,7 @@ export class ChatPage {
 
     this.subscriptionMessage = this.db.list(`/${this.theme}/chats`).valueChanges().subscribe(data => {
         this.messages = data;
-      this.contentArea.scrollToBottom();
+      // this.contentArea.scrollToBottom();
     })
   }
 

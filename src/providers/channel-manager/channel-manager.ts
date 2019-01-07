@@ -13,7 +13,7 @@ import {Subject} from "rxjs/Rx";
 export class ChannelManagerProvider {
 
 
-  public timerChangeSubject: Subject<any>;
+  public dateSubject: Subject<object> = new Subject<object>();
 
   date: any;
   subscriptionMessage;
@@ -25,6 +25,10 @@ export class ChannelManagerProvider {
 
   }
 
+  public emmitInitDateSubject(date){
+    this.dateSubject.next(date);
+  }
+
   public checkChannel(theme: string){
 
   }
@@ -34,10 +38,10 @@ export class ChannelManagerProvider {
   }
 
   public getInitDate(theme: string){
-    // this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
-    //   this.date = data[0];
-    //   this.timerChangeSubject.next(this.date);
-    // });
+    this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
+      this.date = data[0];
+      this.emmitInitDateSubject(this.date);
+    });
   }
 
 }

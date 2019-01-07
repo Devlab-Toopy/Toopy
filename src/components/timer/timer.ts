@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {Subscription} from "rxjs/Rx";
 import {Observable} from 'rxjs/Rx';
+import { AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the TimerComponent component.
@@ -15,14 +16,14 @@ import {Observable} from 'rxjs/Rx';
 })
 export class TimerComponent {
 
-  private timerChange: Subscription;
+  private initDateSubscription: Subscription;
   message: string;
-  private EndDate: Date = new Date('2019-01-11T17:17:00');
+  private endDate: Date;
   private futureString: string;
-  private diff: any;
-  initDate: Date = new Date('2019-01-04T17:17:00');
+  private diff: number;
+  initDate: Date;
 
-  constructor(private channelManager: ChannelManagerProvider) {
+  constructor(private channelManager: ChannelManagerProvider, public alertCtrl: AlertController) {
 
   }
 
@@ -51,14 +52,46 @@ export class TimerComponent {
 
 
   ngOnInit() {
-    Observable.interval(1000).map((x) => {
 
-      this.diff = Math.abs(Date.now() - this.EndDate.getTime()) / 1000;
-    }).subscribe((x) => {
+    this.initDateSubscription = this.channelManager.dateSubject.subscribe(
+      (date: object) => {
+        this.initDate = new Date(date.toString());
+        let myDate = this.initDate.setDate(this.initDate.getDate() + 3);
 
-      this.message = this.dhms(this.diff);
+        this.endDate = new Date(myDate);
+        Observable.interval(1000).map((x) => {
+          this.diff = (this.endDate.getTime() - Date.now()) / 1000;
+        }).takeWhile(() => { return this.diff >= 0; }).subscribe(
+          (x) => {
+            this.message = this.dhms(this.diff);
+            },
+          () => {},
+          () => {
+          this.showConfirm();
+          });
+      }
+    );
+  }
+
+  showConfirm() {
+    const confirm = this.alertCtrl.create({
+      title: 'Use this lightsaber?',
+      message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+            console.log('Agree clicked');
+          }
+        }
+      ]
     });
-
-
+    confirm.present();
   }
 }
