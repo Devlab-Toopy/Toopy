@@ -30,7 +30,7 @@ export class LoginPage {
   }
 
   async login(user: User) {
-      storage.set('name', 'Max');
+      // storage.set('name', 'Max');
       try {
           const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
           console.log(result);

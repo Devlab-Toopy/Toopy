@@ -5,6 +5,9 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {HomePage} from "../home/home";
 import {Profile} from "../../models/profile";
 import {AngularFireDatabase} from "@angular/fire/database";
+import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
+import {Subscription} from "rxjs/Rx";
+import {async} from "rxjs/internal/scheduler/async";
 
 /**
  * Generated class for the RegisterPage page.
@@ -22,12 +25,25 @@ export class RegisterPage {
 
     user = {} as User;
     profile = {} as Profile;
+    themeSubscription: Subscription;
+    themes: object;
 
   constructor(private afAuth: AngularFireAuth, private afDatabase: AngularFireDatabase,
-      public navCtrl: NavController, public navParams: NavParams, public menuCtrl: MenuController) {
+      public navCtrl: NavController, public navParams: NavParams, private channelManager: ChannelManagerProvider, public menuCtrl: MenuController) {
+    this.menuCtrl.enable(false, 'myMenu');
 
-      this.menuCtrl.enable(false, 'myMenu');
   }
+
+  ionViewDidLoad(){
+  this.channelManager.getThemes();
+
+  this.themeSubscription = this.channelManager.themeSubject.subscribe(
+    (themes: object) => {
+      this.themes = themes;
+    }
+  );
+}
+
 
   async register(user: User, profile: Profile) {
     try {
@@ -37,6 +53,7 @@ export class RegisterPage {
     catch(e){
       console.error(e);
     }
+
   this.afAuth.authState.take(1).subscribe(auth =>{
       this.afDatabase.list(`profile/${auth.uid}`).push(profile)
           .then(() => this.navCtrl.setRoot(HomePage))

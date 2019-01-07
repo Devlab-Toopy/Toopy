@@ -45,7 +45,9 @@
 
   <ion-item>
     <ion-label floating>Theme</ion-label>
-    <ion-input [(ngModel)]="profile.theme" ></ion-input>
+    <ion-select [(ngModel)]="profile.theme" >
+      <ion-option *ngFor="let theme of themes" value="{{theme}}">{{theme}}</ion-option>
+    </ion-select>
   </ion-item>
 
   <button ion-button (click)="register(user, profile)">Register</button>

@@ -56,7 +56,7 @@ export class TimerComponent {
     this.initDateSubscription = this.channelManager.dateSubject.subscribe(
       (date: object) => {
         this.initDate = new Date(date.toString());
-        let myDate = this.initDate.setDate(this.initDate.getDate() + 3);
+        let myDate = this.initDate.setDate(this.initDate.getDate() + 7);
 
         this.endDate = new Date(myDate);
         Observable.interval(1000).map((x) => {
