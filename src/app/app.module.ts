@@ -16,6 +16,7 @@ import { AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from "../../.localenv";
 import { ChannelManagerProvider } from '../providers/channel-manager/channel-manager';
 import {TimerComponent} from "../components/timer/timer";
+import {IonicStorageModule} from '@ionic/storage';
 
 let config = environment.config;
 
@@ -42,6 +43,7 @@ let config = environment.config;
     ChatPage
   ],
   providers: [
+    IonicStorageModule,
     StatusBar,
     SplashScreen,
     ChannelManagerProvider,

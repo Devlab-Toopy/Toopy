@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {IonicPage, NavController, NavParams, Content, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, Content, ToastController, MenuController} from 'ionic-angular';
 import {AngularFireDatabase} from "@angular/fire/database";
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {AngularFireAuth} from '@angular/fire/auth';
@@ -34,9 +34,11 @@ export class ChatPage {
               public db: AngularFireDatabase,
               private channelManager: ChannelManagerProvider,
               private afAuth: AngularFireAuth,
-              private toast: ToastController) {
+              private toast: ToastController,
+              public menuCtrl: MenuController) {
     this.username = this.navParams.get('username');
     this.user = this.navParams.get('user');
+    this.menuCtrl.enable(true, 'myMenu');
 
     // this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
     //   this.date = data;

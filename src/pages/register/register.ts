@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, MenuController, NavController, NavParams} from 'ionic-angular';
 import {User} from '../../models/user';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {HomePage} from "../home/home";
@@ -24,7 +24,9 @@ export class RegisterPage {
     profile = {} as Profile;
 
   constructor(private afAuth: AngularFireAuth, private afDatabase: AngularFireDatabase,
-      public navCtrl: NavController, public navParams: NavParams) {
+      public navCtrl: NavController, public navParams: NavParams, public menuCtrl: MenuController) {
+
+      this.menuCtrl.enable(false, 'myMenu');
   }
 
   async register(user: User, profile: Profile) {
@@ -35,7 +37,6 @@ export class RegisterPage {
     catch(e){
       console.error(e);
     }
-
   this.afAuth.authState.take(1).subscribe(auth =>{
       this.afDatabase.list(`profile/${auth.uid}`).push(profile)
           .then(() => this.navCtrl.setRoot(HomePage))
