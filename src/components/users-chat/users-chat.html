@@ -1,0 +1,6 @@
+<!-- Generated template for the UsersChatComponent component -->
+<div [style.top.px]="calculatedTop" id="users-chat" (mousedown)="onPick($event)" (mouseup)="onLeave($event)">
+  <div *ngFor="let user of users">
+    {{user.name}}
+  </div>
+</div>
