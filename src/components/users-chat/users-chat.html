@@ -1,6 +1,12 @@
 <!-- Generated template for the UsersChatComponent component -->
-<div [style.top.px]="calculatedTop" id="users-chat" (mousedown)="onPick($event)" (mouseup)="onLeave($event)">
-  <div *ngFor="let user of users">
-    {{user.name}}
+  <div id="users-chat" (mousedown)="onPick($event)" (mouseup)="onLeave($event)">
+    <div  id="background-users-chat" [@openClose]="isOpen ? 'open' : 'closed'"></div>
+    <div id="content-users" [@openClose]="isOpen ? 'open' : 'closed'">
+      <div id="users-list">
+        <div *ngFor="let user of users">
+          {{user.name}}
+        </div>
+      </div>
+    <div id="icon-group" (click)="toggle()"></div>
   </div>
 </div>

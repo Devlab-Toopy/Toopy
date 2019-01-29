@@ -57,8 +57,10 @@ page-chat {
   }
   .toolbar-background {
     background-color: rgba(0, 0, 0, 0);
-    border: none;
     color: white;
+    border: 0px !important;
+    border-bottom-color: transparent !important;
+    border-bottom: none !important;
   }
   #icon-burger{
     color: white;

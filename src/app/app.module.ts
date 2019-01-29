@@ -18,6 +18,7 @@ import { ChannelManagerProvider } from '../providers/channel-manager/channel-man
 import {TimerComponent} from "../components/timer/timer";
 import {IonicStorageModule} from '@ionic/storage';
 import {UsersChatComponent} from "../components/users-chat/users-chat";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 let config = environment.config;
 
@@ -36,6 +37,7 @@ let config = environment.config;
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    BrowserAnimationsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
