@@ -6,22 +6,21 @@
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+      <ion-icon id="icon-burger" name="menu"></ion-icon>
     </button>
-    <ion-title>Chat</ion-title>
+    <ion-title>Groupe</ion-title>
   </ion-navbar>
 </ion-header>
+<users-chat></users-chat>
 
 <ion-content padding>
-  <div id="welcome">Bienvenue dans la chanell {{theme}}</div>
-  <timer></timer>
-
+  <div id="welcome">Bienvenue dans la chanell {{channel}}</div>
   <div id="chatMessage">
 
     <div class="message" *ngFor="let message of messages">
       <div class="innerMessage" [class]="message.username == username ? 'innerMessage messageRight' : 'innerMessage messageLeft'">
         <div class="username">{{message.username}}  :  </div>
-        <div class="content">{{message.message}}</div>
+        <div class="message-content">{{message.message}}</div>
       </div>
     </div>
   </div>
@@ -29,7 +28,7 @@
 
 <ion-footer>
     <div id="footer">
-      <div class="elem"><ion-input type="text" [(ngModel)]="message"></ion-input></div>
+      <div class="elem"><ion-input type="text" [(ngModel)]="message" placeholder="Chat here..."></ion-input></div>
       <div class="elem"><button ion-button icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon> </button></div>
     </div>
-  </ion-footer>
+</ion-footer>

@@ -8,6 +8,8 @@ import {AngularFireDatabase} from "@angular/fire/database";
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {Subscription} from "rxjs/Rx";
 import {async} from "rxjs/internal/scheduler/async";
+import * as firebase from 'firebase';
+import {ChatPage} from "../chat/chat";
 
 /**
  * Generated class for the RegisterPage page.
@@ -24,9 +26,11 @@ import {async} from "rxjs/internal/scheduler/async";
 export class RegisterPage {
 
     user = {} as User;
+    currentUser: any;
     profile = {} as Profile;
     themeSubscription: Subscription;
     themes: object;
+    username: string;
 
   constructor(private afAuth: AngularFireAuth, private afDatabase: AngularFireDatabase,
       public navCtrl: NavController, public navParams: NavParams, private channelManager: ChannelManagerProvider, public menuCtrl: MenuController) {
@@ -36,7 +40,6 @@ export class RegisterPage {
 
   ionViewDidLoad(){
   this.channelManager.getThemes();
-
   this.themeSubscription = this.channelManager.themeSubject.subscribe(
     (themes: object) => {
       this.themes = themes;
@@ -48,7 +51,14 @@ export class RegisterPage {
   async register(user: User, profile: Profile) {
     try {
         const result = await this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
-        console.log(result);
+        this.currentUser = firebase.auth().currentUser;
+        this.currentUser.updateProfile({
+          displayName: this.username
+        }).then(function() {
+          this.navCtrl.setRoot(ChatPage);
+        }).catch(function(error) {
+          // An error happened.
+        });
     }
     catch(e){
       console.error(e);

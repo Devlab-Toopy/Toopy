@@ -5,7 +5,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {ChatPage} from "../chat/chat";
 import {HomePage} from "../home/home";
 import { IonicStorageModule } from '@ionic/storage';
-import {storage} from "firebase";
+import {default as firebase, storage} from "firebase";
 /**
  * Generated class for the LoginPage page.
  *
@@ -21,6 +21,7 @@ import {storage} from "firebase";
 export class LoginPage {
 
   user = {} as User;
+  currentUser: any;
 
   constructor(private afAuth: AngularFireAuth,
               public navCtrl: NavController, public navParams: NavParams,
@@ -29,17 +30,27 @@ export class LoginPage {
       this.menuCtrl.enable(false, 'myMenu');
   }
 
+  ionViewDidLoad(){
+    this.currentUser = firebase.auth().currentUser;
+
+    console.log(this.currentUser);
+    // if(this.currentUser){
+    //   this.navCtrl.setRoot(ChatPage,{
+    //     username: 'email',
+    //     user : 'user'
+    //   })
+    // }
+  }
+
+
   async login(user: User) {
       // storage.set('name', 'Max');
       try {
           const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
           console.log(result);
+          this.currentUser = firebase.auth().currentUser;
           if(result){
-
-            this.navCtrl.setRoot(ChatPage,{
-                username: this.user.email,
-              user : this.user
-            })
+            this.navCtrl.setRoot(ChatPage, {'email' : this.currentUser.email});
           }
       }
       catch(e){

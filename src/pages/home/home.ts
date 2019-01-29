@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {IonicPage, MenuController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Profile} from "../../models/profile";
+import * as firebase from 'firebase';
+import {LoginPage} from "../login/login";
 
 /**
  * Generated class for the HomePage page.
@@ -17,6 +19,7 @@ import {Profile} from "../../models/profile";
 })
 export class HomePage {
 
+  currentUser:any;
     constructor(private afAuth: AngularFireAuth, private toast: ToastController,
                 public navCtrl: NavController, public navParams: NavParams, public menuCtrl: MenuController) {
 
@@ -24,23 +27,33 @@ export class HomePage {
     }
 
   ionViewDidLoad(){
-    this.afAuth.authState.subscribe(data => {
-      if(data.email && data.uid){
 
-
-      this.toast.create({
-          message: 'WELCOME',
-          duration: 3000
-      }).present();
-      }
-
-      else{
-          this.toast.create({
-              message: 'Could not find authentification',
-              duration: 3000
-          }).present();
-      }
-
-    });
+    this.currentUser = firebase.auth().currentUser;
+    // this.currentUser.updateProfile({
+    //   displayName: 'Luc Marie'
+    // });
+    //
+    // this.afAuth.authState.subscribe(data => {
+    //   if(data.email && data.uid){
+    //
+    //
+    //   this.toast.create({
+    //       message: 'WELCOME',
+    //       duration: 3000
+    //   }).present();
+    //   }
+    //
+    //   else{
+    //       this.toast.create({
+    //           message: 'Could not find authentification',
+    //           duration: 3000
+    //       }).present();
+    //   }
+    //
+    // });
+  }
+  logout(){
+    firebase.auth().signOut();
+    this.navCtrl.setRoot(LoginPage);
   }
 }

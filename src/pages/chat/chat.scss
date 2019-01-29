@@ -2,7 +2,7 @@ page-chat {
   .innerMessage {
     display: inline-block;
     padding: 5px 10px;
-    background: color($colors, 'primary');
+    background: #ffad41;
     color: white;
     border-radius: 3px;
     margin: 5px;
@@ -15,7 +15,7 @@ page-chat {
     margin-bottom: 14px;
   }
   .innerMessage.messageRight{
-    background: color($colors, 'secondary');
+    background: #ff6e3b ;
   }
   .elem button {
     border-radius: 0;
@@ -37,9 +37,12 @@ page-chat {
     display: flex;
     flex-direction: row;
     align-items: stretch;
+    background: white;
+    height: 50px;
   }
-  .ion-input{
+  ion-input{
     padding-left: 15px;
+
   }
   .message:after {
     content: '';
@@ -51,5 +54,19 @@ page-chat {
   }
   .messageRight {
     float: right;
+  }
+  .toolbar-background {
+    background-color: #ff6e3b;
+    color: white;
+  }
+  #icon-burger{
+    color: white;
+  }
+  .toolbar-title{
+    color: white;
+  }
+  .content{
+    background: url("../../assets/imgs/bg.png");
+    background-size: cover;
   }
 }

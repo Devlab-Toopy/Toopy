@@ -15,6 +15,8 @@ export class ChannelManagerProvider {
 
   public dateSubject: Subject<object> = new Subject<object>();
   public themeSubject: Subject<object> = new Subject<object>();
+  public channelUsersSubject: Subject<object> = new Subject<object>();
+  public channelUsers: Object;
 
   date: Object;
   subscriptionMessage;
@@ -35,6 +37,10 @@ export class ChannelManagerProvider {
     this.themeSubject.next(themes);
   }
 
+  public emitChannelUsersSubject(users: object){
+    this.channelUsersSubject.next(users);
+  }
+
   public checkChannel(theme: string){
 
   }
@@ -44,7 +50,7 @@ export class ChannelManagerProvider {
   }
 
   public getInitDate(theme: string){
-    this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
+    this.subscriptionMessage = this.db.list(`Channels/${theme}/init`).valueChanges().subscribe(data => {
       this.date = data[0];
       this.emitInitDateSubject(this.date);
     });
@@ -54,7 +60,14 @@ export class ChannelManagerProvider {
     this.subscriptionMessage = this.db.list('Themes').valueChanges().subscribe(data => {
       this.themes = data;
       console.log(data);
-      this.emitThemeSubject(data);
+      this.emitThemeSubject(this.themes);
+    })
+  }
+
+  public getChannelUsers(channel: string){
+    this.subscriptionMessage = this.db.list(`Channels/${channel}/users`).valueChanges().subscribe(data => {
+      this.channelUsers = data;
+      this.emitChannelUsersSubject(this.channelUsers);
     })
   }
 

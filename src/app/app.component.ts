@@ -7,6 +7,8 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage} from '../pages/login/login';
 import { ListPage } from '../pages/list/list';
 import { ChatPage } from "../pages/chat/chat";
+import {AngularFireAuth} from '@angular/fire/auth';
+import * as firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,10 +17,11 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = 'LoginPage';
-
+  currentUser: any;
+  username: string;
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private afAuth: AngularFireAuth) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -28,6 +31,12 @@ export class MyApp {
       { title: 'Chat', component: ChatPage },
     ];
 
+    this.afAuth.authState.subscribe(data => {
+      if(data.email) {
+        this.currentUser = firebase.auth().currentUser;
+        this.username = this.currentUser.displayName;
+      }
+    });
   }
 
   initializeApp() {

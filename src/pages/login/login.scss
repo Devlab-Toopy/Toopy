@@ -1,3 +1,55 @@
 page-login {
-
+  .main-background{
+    height: 55%;
+    background: url("../../assets/imgs/mainbg.png");
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    #toopy-logo{
+      background: url("../../assets/imgs/logo.png");
+      width: 150px;
+      height: 150px;
+      background-size: cover;
+      margin: 0 auto;
+    }
+  }
+  ion-content{
+    height: 45%;
+    position: relative!important;
+    #cta{
+      width: 100%;
+      text-align: center;
+      p{
+        color: grey;
+      }
+      span{
+        cursor: pointer;
+      }
+      #login-button{
+        width: 240px;
+        position: relative;
+        margin-top: 30px;
+        height: 35px;
+        background: #ff6e3b;
+        color: white;
+        border-radius: 25px;
+        font-size: 20px;
+      }
+    }
+  }
+  #email{
+    height: 16px;
+    margin: 0 auto;
+    width: 100px;
+    background: url("../../assets/imgs/identifiant_titre.png");
+    background-size: contain;
+  }
+  #password{
+    height: 16px;
+    margin: 20px auto 0 auto;
+    width: 120px;
+    background: url("../../assets/imgs/mdp_titre.png");
+    background-size: contain;
+  }
 }
