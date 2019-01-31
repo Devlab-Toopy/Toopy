@@ -20,16 +20,17 @@ import {
     trigger('openClose', [
       // ...
       state('open', style({
-        'top': '0px'
-      })),
-      state('closed', style({
-        'top': '-355px'
-      })),
+        'top': '{{calculatedTop}}px'
+      }), {params: {calculatedTop: 0}}),
+
+      state('open', style({
+        'top': '{{calculatedTop}}px'
+      }), {params: {calculatedTop: -355}}),
       transition('open => closed', [
-        animate('0.5s')
+        animate('0.5s ease-in-out'),
       ]),
       transition('closed => open', [
-        animate('0.5s')
+        animate('0.5s ease-in-out'),
       ]),
     ]),
   ]
@@ -37,7 +38,7 @@ import {
 export class UsersChatComponent {
   users : Array<object> = [{'name' : 'Alexandre'}, {'name': 'Luc'}, {'name': 'Mathieu'}, {'name': 'Nico'}, {'name': 'Naïm'}, {'name': 'lautre pd'}];
   text: string;
-  calculatedTop: number=0;
+  calculatedTop: number=-355;
   click: boolean = false;
   isOpen:boolean = false;
 
@@ -46,20 +47,20 @@ export class UsersChatComponent {
     this.text = 'Hello World';
   }
 
-  onPick(){
+  onPick(event:any){
    this.click = true;
     Observable.interval(100).map((x) => {
 
     }).takeWhile(() => { return this.click == true; }).subscribe(
       (x) => {
-        console.log('yo')
+        console.log(event.clientY)
       },
       () => {},
       () => {});
   }
 
   onLeave(){
-  this.click = false;
+      this.click = false;
   }
 
   toggle() {

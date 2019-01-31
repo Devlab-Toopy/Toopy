@@ -1,8 +1,15 @@
+///<reference path="../../../node_modules/@angular/compiler/src/util.d.ts"/>
 import { Component, OnInit } from '@angular/core';
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {Subscription} from "rxjs/Rx";
 import {Observable} from 'rxjs/Rx';
-import { AlertController } from 'ionic-angular';
+import { AlertController, NavController } from 'ionic-angular';
+import {text} from "@angular/core/src/render3/instructions";
+import * as firebase from 'firebase';
+import {ChatPage} from "../../pages/chat/chat";
+import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
+import {AngularFireDatabase} from "@angular/fire/database";
+import {noUndefined} from "@angular/compiler/src/util";
 
 /**
  * Generated class for the TimerComponent component.
@@ -16,33 +23,38 @@ import { AlertController } from 'ionic-angular';
 })
 export class TimerComponent {
 
-  themeSubscription: Subscription;
+  private themeSubscription: Subscription;
   private initDateSubscription: Subscription;
-  message: string;
+  private allChannelsSubscription: Subscription;
+  public message: string;
   private endDate: Date;
   private futureString: string;
   private diff: number;
-  initDate: Date;
-  themes: object;
+  public initDate: Date;
+  public themes: object;
+  public theme: string;
+  public channels: object;
+  public currentUser: object;
 
-  constructor(private channelManager: ChannelManagerProvider, public alertCtrl: AlertController) {
+  constructor(private channelManager: ChannelManagerProvider, public alertCtrl: AlertController, public db: AngularFireDatabase) {
     this.initDateSubscription = this.channelManager.dateSubject.subscribe(
       (date: object) => {
-        console.log('date : '+date);
-        this.initDate = new Date(date.toString());
-        let myDate = this.initDate.setDate(this.initDate.getDate() + 7);
-
-        this.endDate = new Date(myDate);
-        Observable.interval(1000).map((x) => {
-          this.diff = (this.endDate.getTime() - Date.now()) / 1000;
-        }).takeWhile(() => { return this.diff >= 0; }).subscribe(
-          (x) => {
-            this.message = this.dhms(this.diff);
-          },
-          () => {},
-          () => {
-            this.showConfirm();
-          });
+        this.theme = this.channelManager.theme;
+        if(date){
+          this.initDate = new Date(date.toString());
+          let myDate = this.initDate.setDate(this.initDate.getDate() + 7);
+          this.endDate = new Date(myDate);
+          Observable.interval(1000).map((x) => {
+            this.diff = (this.endDate.getTime() - Date.now()) / 1000;
+          }).takeWhile(() => { return this.diff >= 0; }).subscribe(
+            (x) => {
+              this.message = this.dhms(this.diff);
+            },
+            () => {},
+            () => {
+              this.showConfirm();
+            });
+        }
       }
     );
   }
@@ -83,7 +95,31 @@ export class TimerComponent {
         {
           text: 'Nope',
           handler: () => {
-            console.log('Disagree clicked');
+            this.channelManager.getAllActiveChannels();
+            this.allChannelsSubscription = this.channelManager.allChannelSubject.subscribe(
+              (channels: object) => {
+                this.currentUser = firebase.auth().currentUser;
+                let newchannel = true;
+                  this.channels = channels;
+                  let keys = Object.keys(this.channels);
+                  for(let i = 0; i< keys.length; i++){
+                    let channel = this.channels[keys[i]];
+                    if(channel['theme'] == this.theme){
+                      let initdate = new Date(channel['init']['date'].toString());
+                      let delta = (Date.now() - initdate.getTime())/86400000;
+                      if(delta > 4){
+                        this.channelManager.moveChannelToPast();
+                        this.channelManager.joinChannel(keys[i], this.currentUser);
+                        newchannel = false;
+                        break;
+                      }
+                   }
+                }
+                if(newchannel){
+                    this.channelManager.createChannel(this.theme, this.currentUser);
+                }
+              }
+            );
           }
         },
         {
@@ -94,7 +130,7 @@ export class TimerComponent {
             this.themeSubscription = this.channelManager.themeSubject.subscribe(
               (themes: object) => {
                 this.themes = themes;
-                this.showRadio()
+                this.showRadio();
               }
             );
           }

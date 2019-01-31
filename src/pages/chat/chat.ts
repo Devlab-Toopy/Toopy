@@ -4,6 +4,7 @@ import {AngularFireDatabase} from "@angular/fire/database";
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
+import {UsersChatComponent} from "../../components/users-chat/users-chat";
 
 /**
  * Generated class for the ChatPage page.
@@ -32,6 +33,7 @@ export class ChatPage {
   messages: object[] = [];
   theme: string;
   channel: string;
+  channelObject: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -43,6 +45,7 @@ export class ChatPage {
     this.afAuth.authState.subscribe(data => {
       if(data.email){
         this.currentUser = firebase.auth().currentUser;
+        this.channelManager.currentUser = this.currentUser;
         console.log(this.currentUser);
         this.username = this.currentUser.displayName;
 
@@ -54,13 +57,18 @@ export class ChatPage {
           let channel = data[0];
           let theme = data[1];
           this.theme = theme.toString();
+          this.channelManager.theme = this.theme;
           this.channel = channel.toString();
-
+          this.channelManager.channel = this.channel;
           this.channelManager.getInitDate(this.channel);
-
-          this.subscriptionMessage = this.db.list(`Channels/${this.channel}/chats`).valueChanges().subscribe(data => {
+          console.log('nb loop chat');
+          this.subscriptionMessage = this.db.list(`Channels/active/${this.channel}/chats`).valueChanges().subscribe(data => {
             this.messages = data;
-            // this.contentArea.scrollToBottom();
+          });
+
+          this.subscriptionMessage = this.db.list(`Channels/active/${this.channel}`).valueChanges().subscribe(data => {
+            this.channelObject = data;
+            this.channelManager.channelObject = this.channelObject;
           })
         });
       }
@@ -85,7 +93,7 @@ export class ChatPage {
   }
 
   sendMessage(){
-    this.db.list(`/${this.theme}/chats`).push({
+    this.db.list(`Channels/active/${this.channel}/chats`).push({
       username: this.username,
       message: this.message
     }).then( () => {
@@ -93,7 +101,6 @@ export class ChatPage {
     });
     this.message = '';
   }
-
 
   // this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
   //   this.date = data;
