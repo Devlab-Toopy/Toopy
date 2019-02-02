@@ -29,6 +29,8 @@ export class ChannelManagerProvider {
   public channels: object;
   public currentUser: object;
   public activeChannels: object;
+  public timerCount: number = 7;
+  public timerMin: number = 4;
 
   constructor(public db: AngularFireDatabase) {
   }
@@ -71,17 +73,20 @@ export class ChannelManagerProvider {
   }
 
   public moveChannelToPast() {
-    let channel = {
-      [this.channel]: {
-        'chats': this.channelObject[0],
-        'init': {
-          'date': this.channelObject[1]['date']
-        },
-        'theme': this.channelObject[2],
-        'users': this.channelObject[3]
-      }
-    };
-    this.db.object(`Channels/${this.channel}`).update({active : false});
+    if(this.channelObject){
+      let channel = {
+        [this.channel]: {
+          'chats': this.channelObject[0],
+          'init': {
+            'date': this.channelObject[1]['date']
+          },
+          'theme': this.channelObject[2],
+          'users': this.channelObject[3]
+        }
+      };
+      this.db.object(`Channels/${this.channel}`).update({active : false});
+    }
+
   }
 
   public getAllActiveChannels(){
@@ -156,6 +161,32 @@ export class ChannelManagerProvider {
     this.db.object(`/profile/${user['uid']}`).update({channel: newChannelName});
     this.db.object(`/profile/${user['uid']}`).update({theme: theme});
     this.db.object(`/Channels`).update({[newChannelName]: channel});
+  }
+
+  changeChannel(theme: string, user: object, newUser: boolean){
+    let newchannel = true;
+    this.channels = this.activeChannels;
+    let keys = Object.keys(this.channels);
+    for(let i = 0; i< keys.length; i++){
+      let channel = this.channels[keys[i]];
+      if(channel['theme'] == theme){
+        let initdate = new Date(channel['init']['date'].toString());
+        let delta = (Date.now() - initdate.getTime())/86400000;
+        if(delta < this.timerMin){
+          if(!newUser){
+            this.moveChannelToPast();
+          }
+          console.log('channel name : '+keys[i]);
+          this.joinChannel(keys[i], user);
+          newchannel = false;
+          break;
+        }
+      }
+    }
+    if(newchannel){
+      this.moveChannelToPast();
+      this.createChannel(theme, user);
+    }
   }
 
 }
