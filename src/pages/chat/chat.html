@@ -15,7 +15,7 @@
 
 <ion-content padding>
   <div id="welcome">Bienvenue dans la chanell {{channel}}</div>
-  <div id="chatMessage">
+  <div id="chatMessage" #chatMessage>
 
     <div class="message" *ngFor="let message of messages">
       <div class="innerMessage" [class]="message.username == username ? 'innerMessage messageRight' : 'innerMessage messageLeft'">

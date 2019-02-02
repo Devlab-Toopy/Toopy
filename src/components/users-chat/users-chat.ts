@@ -43,7 +43,6 @@ export class UsersChatComponent {
   isOpen:boolean = false;
 
   constructor() {
-    console.log('Hello UsersChatComponent Component');
     this.text = 'Hello World';
   }
 
