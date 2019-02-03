@@ -1,8 +1,15 @@
+///<reference path="../../../node_modules/@angular/compiler/src/util.d.ts"/>
 import { Component, OnInit } from '@angular/core';
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {Subscription} from "rxjs/Rx";
 import {Observable} from 'rxjs/Rx';
-import { AlertController } from 'ionic-angular';
+import { AlertController, NavController } from 'ionic-angular';
+import {text} from "@angular/core/src/render3/instructions";
+import * as firebase from 'firebase';
+import {ChatPage} from "../../pages/chat/chat";
+import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
+import {AngularFireDatabase} from "@angular/fire/database";
+import {noUndefined} from "@angular/compiler/src/util";
 
 /**
  * Generated class for the TimerComponent component.
@@ -16,33 +23,38 @@ import { AlertController } from 'ionic-angular';
 })
 export class TimerComponent {
 
-  themeSubscription: Subscription;
+  private themeSubscription: Subscription;
   private initDateSubscription: Subscription;
-  message: string;
+  private allChannelsSubscription: Subscription;
+  public message: string;
   private endDate: Date;
   private futureString: string;
   private diff: number;
-  initDate: Date;
-  themes: object;
+  public initDate: Date;
+  public themes: object;
+  public theme: string;
+  public channels: object;
+  public currentUser: object;
 
-  constructor(private channelManager: ChannelManagerProvider, public alertCtrl: AlertController) {
+  constructor(private channelManager: ChannelManagerProvider, public alertCtrl: AlertController, public db: AngularFireDatabase) {
     this.initDateSubscription = this.channelManager.dateSubject.subscribe(
       (date: object) => {
-        console.log('date : '+date);
-        this.initDate = new Date(date.toString());
-        let myDate = this.initDate.setDate(this.initDate.getDate() + 7);
-
-        this.endDate = new Date(myDate);
-        Observable.interval(1000).map((x) => {
-          this.diff = (this.endDate.getTime() - Date.now()) / 1000;
-        }).takeWhile(() => { return this.diff >= 0; }).subscribe(
-          (x) => {
-            this.message = this.dhms(this.diff);
-          },
-          () => {},
-          () => {
-            this.showConfirm();
-          });
+        this.theme = this.channelManager.theme;
+        if(date){
+          this.initDate = new Date(date.toString());
+          let myDate = this.initDate.setDate(this.initDate.getDate() + this.channelManager.timerCount);
+          this.endDate = new Date(myDate);
+          Observable.interval(1000).map((x) => {
+            this.diff = (this.endDate.getTime() - Date.now()) / 1000;
+          }).takeWhile(() => { return this.diff >= 0; }).subscribe(
+            (x) => {
+              this.message = this.dhms(this.diff);
+            },
+            () => {},
+            () => {
+              this.showConfirm();
+            });
+        }
       }
     );
   }
@@ -83,20 +95,16 @@ export class TimerComponent {
         {
           text: 'Nope',
           handler: () => {
-            console.log('Disagree clicked');
+                this.currentUser = firebase.auth().currentUser;
+                this.channelManager.changeChannel(this.theme, this.currentUser, false);
           }
         },
         {
           text: 'Chaud',
           handler: () => {
             console.log('Agree clicked');
-            this.channelManager.getThemes();
-            this.themeSubscription = this.channelManager.themeSubject.subscribe(
-              (themes: object) => {
-                this.themes = themes;
-                this.showRadio()
-              }
-            );
+                this.themes = this.channelManager.themes;
+                this.showRadio();
           }
         }
       ]
@@ -117,11 +125,19 @@ export class TimerComponent {
     }
 
 
-    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'Cancel',
+      handler : data => {
+        this.showConfirm();
+      }
+    });
     alert.addButton({
       text: 'OK',
       handler: data => {
-
+        console.log(data);
+        let choosenTheme = data;
+        this.currentUser = firebase.auth().currentUser;
+        this.channelManager.changeChannel(choosenTheme, this.currentUser, false)
       }
     });
     alert.present();

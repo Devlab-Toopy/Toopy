@@ -15,40 +15,32 @@
 
 
 <ion-content padding>
+  <ion-item>
+    <ion-label floating>E-mail Adress</ion-label>
+    <ion-input type="text" [(ngModel)]="user.email" value="alex2@toopy.fr"></ion-input>
+  </ion-item>
 
-  <!--<ion-item>-->
-    <!--<ion-label floating>E-mail Adress</ion-label>-->
-    <!--<ion-input type="text" [(ngModel)]="user.email" ></ion-input>-->
-  <!--</ion-item>-->
-
-  <!--<ion-item>-->
-    <!--<ion-label floating>Password</ion-label>-->
-    <!--<ion-input type="password" [(ngModel)]="user.password" ></ion-input>-->
-  <!--</ion-item>-->
-
-
-  <!--<ion-item>-->
-    <!--<ion-label floating>Username</ion-label>-->
-    <!--<ion-input [(ngModel)]="username" ></ion-input>-->
-  <!--</ion-item>-->
+  <ion-item>
+    <ion-label floating>Password</ion-label>
+    <ion-input type="password" [(ngModel)]="user.password" value="alexmaillot"></ion-input>
+  </ion-item>
 
 
-  <!--<ion-item>-->
-    <!--<ion-label floating>First Name</ion-label>-->
-    <!--<ion-input [(ngModel)]="profile.firstName" ></ion-input>-->
-  <!--</ion-item>-->
+  <ion-item>
+    <ion-label floating>Username</ion-label>
+    <ion-input [(ngModel)]="username" value="alex"></ion-input>
+  </ion-item>
 
-  <!--<ion-item>-->
-    <!--<ion-label floating>Last Name</ion-label>-->
-    <!--<ion-input [(ngModel)]="profile.lastName" ></ion-input>-->
-  <!--</ion-item>-->
 
-  <!--<ion-item>-->
-    <!--<ion-label floating>Theme</ion-label>-->
-    <!--<ion-select [(ngModel)]="profile.theme" >-->
-      <!--<ion-option *ngFor="let theme of themes" value="{{theme}}">{{theme}}</ion-option>-->
-    <!--</ion-select>-->
-  <!--</ion-item>-->
+  <ion-item>
+    <ion-label floating>First Name</ion-label>
+    <ion-input [(ngModel)]="profile.firstName" value="alex"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Last Name</ion-label>
+    <ion-input [(ngModel)]="profile.lastName" value="alex"></ion-input>
+  </ion-item>
 
   <ion-item>
     <div class="profile-image">

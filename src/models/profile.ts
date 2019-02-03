@@ -4,5 +4,6 @@ export interface Profile {
     firstName: string;
     lastName: string;
     theme: string;
+    channel: string;
 
 }

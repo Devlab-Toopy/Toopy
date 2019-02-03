@@ -11,6 +11,7 @@ import {async} from "rxjs/internal/scheduler/async";
 import * as firebase from 'firebase';
 import {ChatPage} from "../chat/chat";
 import {ImgHandlerProvider} from "../../providers/imghandler/imghandler";
+import {LoginPage} from "../login/login";
 
 /**
  * Generated class for the RegisterPage page.
@@ -43,6 +44,7 @@ export class RegisterPage {
 
   ionViewDidLoad(){
   this.channelManager.getThemes();
+  this.channelManager.getAllActiveChannels();
   this.themeSubscription = this.channelManager.themeSubject.subscribe(
     (themes: object) => {
       this.themes = themes;
@@ -70,8 +72,13 @@ async register(user: User, profile: Profile) {
     }
 
   this.afAuth.authState.take(1).subscribe(auth =>{
-      this.afDatabase.list(`profile/${auth.uid}`).push(profile)
-          .then(() => this.navCtrl.setRoot(HomePage))
+      this.afDatabase.object(`profile/`).update({[auth.uid]: profile})
+          .then(() => {
+        console.log(profile.theme);
+        console.log(auth);
+            this.channelManager.changeChannel(profile.theme, auth, true);
+            this.navCtrl.canGoBack();
+          })
   })
 
   }
