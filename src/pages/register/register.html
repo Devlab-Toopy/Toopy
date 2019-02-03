@@ -16,38 +16,53 @@
 
 <ion-content padding>
 
-  <ion-item>
-    <ion-label floating>E-mail Adress</ion-label>
-    <ion-input type="text" [(ngModel)]="user.email" ></ion-input>
-  </ion-item>
+  <!--<ion-item>-->
+    <!--<ion-label floating>E-mail Adress</ion-label>-->
+    <!--<ion-input type="text" [(ngModel)]="user.email" ></ion-input>-->
+  <!--</ion-item>-->
+
+  <!--<ion-item>-->
+    <!--<ion-label floating>Password</ion-label>-->
+    <!--<ion-input type="password" [(ngModel)]="user.password" ></ion-input>-->
+  <!--</ion-item>-->
+
+
+  <!--<ion-item>-->
+    <!--<ion-label floating>Username</ion-label>-->
+    <!--<ion-input [(ngModel)]="username" ></ion-input>-->
+  <!--</ion-item>-->
+
+
+  <!--<ion-item>-->
+    <!--<ion-label floating>First Name</ion-label>-->
+    <!--<ion-input [(ngModel)]="profile.firstName" ></ion-input>-->
+  <!--</ion-item>-->
+
+  <!--<ion-item>-->
+    <!--<ion-label floating>Last Name</ion-label>-->
+    <!--<ion-input [(ngModel)]="profile.lastName" ></ion-input>-->
+  <!--</ion-item>-->
+
+  <!--<ion-item>-->
+    <!--<ion-label floating>Theme</ion-label>-->
+    <!--<ion-select [(ngModel)]="profile.theme" >-->
+      <!--<ion-option *ngFor="let theme of themes" value="{{theme}}">{{theme}}</ion-option>-->
+    <!--</ion-select>-->
+  <!--</ion-item>-->
 
   <ion-item>
-    <ion-label floating>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="user.password" ></ion-input>
-  </ion-item>
-
-
-  <ion-item>
-    <ion-label floating>Username</ion-label>
-    <ion-input [(ngModel)]="username" ></ion-input>
-  </ion-item>
-
-
-  <ion-item>
-    <ion-label floating>First Name</ion-label>
-    <ion-input [(ngModel)]="profile.firstName" ></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label floating>Last Name</ion-label>
-    <ion-input [(ngModel)]="profile.lastName" ></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label floating>Theme</ion-label>
-    <ion-select [(ngModel)]="profile.theme" >
-      <ion-option *ngFor="let theme of themes" value="{{theme}}">{{theme}}</ion-option>
-    </ion-select>
+    <div class="profile-image">
+      <img src="{{imgurl}}">
+    </div>
+    <div>
+      <button ion-button round outline (click)="chooseimage()">Choose an image</button>
+    </div>
+    <div [hidden]="!moveon">
+      <button ion-button round outline (click)="proceed()">Skip this step</button>
+    </div>
+    <div [hidden]="moveon">
+      <button ion-button round outline (click)="updateproceed()">Upload & proceed</button>
+    </div>
   </ion-item>
 
   <button ion-button (click)="register(user, profile)">Register</button>

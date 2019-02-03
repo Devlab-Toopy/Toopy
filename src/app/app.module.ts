@@ -10,16 +10,24 @@ import { ChatPage } from "../pages/chat/chat";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { File } from '@ionic-native/file';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FilePath } from '@ionic-native/file-path';
+
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule} from "@angular/fire/database";
 import { AngularFireAuthModule} from '@angular/fire/auth';
-import {environment} from "../../.localenv";
+import { IonicStorageModule } from '@ionic/storage';
+
+import { environment } from "../../.localenv";
 import { ChannelManagerProvider } from '../providers/channel-manager/channel-manager';
+import { ImgHandlerProvider } from "../providers/imghandler/imghandler";
+
 import {TimerComponent} from "../components/timer/timer";
-import {IonicStorageModule} from '@ionic/storage';
 import {UsersChatComponent} from "../components/users-chat/users-chat";
 
 let config = environment.config;
+
 
 @NgModule({
   declarations: [
@@ -48,8 +56,13 @@ let config = environment.config;
     IonicStorageModule,
     StatusBar,
     SplashScreen,
-    ChannelManagerProvider,
+    File,
+    FilePath,
+    FileChooser,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ChannelManagerProvider,
+    ImgHandlerProvider,
+
   ]
 })
 export class AppModule {}
