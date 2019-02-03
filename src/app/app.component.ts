@@ -31,12 +31,12 @@ export class MyApp {
       { title: 'Chat', component: ChatPage },
     ];
 
-    this.afAuth.authState.subscribe(data => {
-      if(data.email) {
-        this.currentUser = firebase.auth().currentUser;
-        this.username = this.currentUser.displayName;
-      }
-    });
+    // this.afAuth.authState.subscribe(data => {
+    //   if(data.email) {
+    //     this.currentUser = firebase.auth().currentUser;
+    //     this.username = this.currentUser.displayName;
+    //   }
+    // });
   }
 
   initializeApp() {

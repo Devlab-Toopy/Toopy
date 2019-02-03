@@ -65,7 +65,6 @@ let config = environment.config;
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ChannelManagerProvider,
     ImgHandlerProvider,
-
   ]
 })
 export class AppModule {}

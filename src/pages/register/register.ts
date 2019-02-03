@@ -77,7 +77,7 @@ async register(user: User, profile: Profile) {
         console.log(profile.theme);
         console.log(auth);
             this.channelManager.changeChannel(profile.theme, auth, true);
-            this.navCtrl.canGoBack();
+            this.navCtrl.pop();
           })
   })
 
@@ -85,7 +85,7 @@ async register(user: User, profile: Profile) {
 
 
 updateimage(imageurl) {
-    var promise = new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
         this.afAuth.auth.currentUser.updateProfile({
             displayName: this.afAuth.auth.currentUser.displayName,
             photoURL: imageurl

@@ -4,10 +4,10 @@
     <div id="content-users" [@openClose]="{value: isOpen ? 'open' : 'closed', calculatedTop : calculatedTop}" [style.top.px]="calculatedTop">
       <div id="users-list">
         <div *ngFor="let user of users">
-          {{user.name}}
+          {{user}}
         </div>
       </div>
-      <div id="bottom-users-chat"></div>
+      <timer></timer>
       <div id="icon-group" (click)="toggle()"></div>
   </div>
 </div>

@@ -43,6 +43,13 @@
   </ion-item>
 
   <ion-item>
+    <ion-label floating>Theme</ion-label>
+    <ion-select [(ngModel)]="profile.theme" >
+      <ion-option *ngFor="let theme of themes" value="{{theme}}">{{theme}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
     <div class="profile-image">
       <img src="{{imgurl}}">
     </div>
