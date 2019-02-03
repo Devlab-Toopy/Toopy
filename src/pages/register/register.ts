@@ -1,5 +1,5 @@
 import {Component, NgZone} from '@angular/core';
-import {IonicPage, MenuController, NavController, NavParams, LoadingController} from 'ionic-angular';
+import {IonicPage, MenuController, NavController, NavParams, LoadingController, ToastController} from 'ionic-angular';
 import {User} from '../../models/user';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {HomePage} from "../home/home";
@@ -12,6 +12,9 @@ import * as firebase from 'firebase';
 import {ChatPage} from "../chat/chat";
 import {ImgHandlerProvider} from "../../providers/imghandler/imghandler";
 import {LoginPage} from "../login/login";
+
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 /**
  * Generated class for the RegisterPage page.
@@ -26,6 +29,8 @@ import {LoginPage} from "../login/login";
   templateUrl: 'register.html',
 })
 export class RegisterPage {
+    imageURI: any;
+    imageFileName: any;
     imgurl = 'https://firebasestorage.googleapis.com/v0/b/myapp-4eadd.appspot.com/o/chatterplace.png?alt=media&token=e51fa887-bfc6-48ff-87c6-e2c61976534e';
     moveon: boolean = true;
     user = {} as User;
@@ -37,7 +42,9 @@ export class RegisterPage {
 
   constructor(private afAuth: AngularFireAuth, private afDatabase: AngularFireDatabase, public navCtrl: NavController,
               public navParams: NavParams, private channelManager: ChannelManagerProvider, public menuCtrl: MenuController,
-              public imgService: ImgHandlerProvider, public loadingCtrl: LoadingController, public zone: NgZone) {
+              public imgService: ImgHandlerProvider, public zone: NgZone,
+              public transfer: FileTransfer, public camera: Camera, public loadingCtrl: LoadingController,
+              public toastCtrl: ToastController) {
     this.menuCtrl.enable(false, 'myMenu');
 
   }
@@ -83,62 +90,61 @@ async register(user: User, profile: Profile) {
 
   }
 
+getImage() {
+    const options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    }
 
-updateimage(imageurl) {
-    let promise = new Promise((resolve, reject) => {
-        this.afAuth.auth.currentUser.updateProfile({
-            displayName: this.afAuth.auth.currentUser.displayName,
-            photoURL: imageurl
-        }).then(() => {
-            firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({
-                displayName: this.afAuth.auth.currentUser.displayName,
-                photoURL: imageurl,
-                uid: firebase.auth().currentUser.uid
-            }).then(() => {
-                resolve({ success: true });
-            }).catch((err) => {
-                reject(err);
-            })
-        }).catch((err) => {
-            reject(err);
-        })
-    })
-    return promise;
+    this.camera.getPicture(options).then((imageData) => {
+        this.imageURI = imageData;
+    }, (err) => {
+        console.log(err);
+        this.presentToast(err);
+    });
 }
 
-chooseimage() {
-    let loader = this.loadingCtrl.create({
-        content: 'Veuillez attendre'
-    })
-    loader.present();
-    this.imgService.uploadimage().then((uploadedurl: any) => {
+uploadFile() {
+let loader = this.loadingCtrl.create({
+    content: "Uploading..."
+});
+loader.present();
+const fileTransfer: FileTransferObject = this.transfer.create();
+
+let options: FileUploadOptions = {
+    fileKey: 'ionicfile',
+    fileName: 'ionicfile',
+    chunkedMode: false,
+    mimeType: "image/jpeg",
+    headers: {}
+}
+
+fileTransfer.upload(this.imageURI, 'http://192.168.0.7:8080/api/uploadImage', options)
+    .then((data) => {
+        console.log(data+" Uploaded Successfully");
+        this.imageFileName = "http://192.168.0.7:8080/static/images/ionicfile.jpg"
         loader.dismiss();
-        this.zone.run(() => {
-            this.imgurl = uploadedurl;
-            this.moveon = false;
-        })
-    })
+        this.presentToast("Image uploaded successfully");
+    }, (err) => {
+        console.log(err);
+        loader.dismiss();
+        this.presentToast(err);
+    });
 }
 
-// updateproceed() {
-//     let loader = this.loadingCtrl.create({
-//         content: 'Please wait'
-//     })
-//     loader.present();
-//     this.userservice.updateimage(this.imgurl).then((res: any) => {
-//         loader.dismiss();
-//         if (res.success) {
-//             this.navCtrl.setRoot('TabsPage');
-//         }
-//         else {
-//             alert(res);
-//         }
-//     })
-// }
-//
-// proceed() {
-//     this.navCtrl.setRoot('TabsPage');
-//
-// }
+    presentToast(msg) {
+        let toast = this.toastCtrl.create({
+            message: msg,
+            duration: 3000,
+            position: 'bottom'
+        });
+
+        toast.onDidDismiss(() => {
+            console.log('Dismissed toast');
+        });
+
+        toast.present();
+    }
 
 }

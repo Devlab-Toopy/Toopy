@@ -10,7 +10,6 @@ import { ChatPage } from "../pages/chat/chat";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { File } from '@ionic-native/file/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 
@@ -27,6 +26,10 @@ import {TimerComponent} from "../components/timer/timer";
 import {UsersChatComponent} from "../components/users-chat/users-chat";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {LoginPage} from "../pages/login/login";
+
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
 
 let config = environment.config;
 
@@ -62,6 +65,10 @@ let config = environment.config;
     File,
     FilePath,
     FileChooser,
+    FileTransfer,
+    // FileUploadOptions,
+    // FileTransferObject,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ChannelManagerProvider,
     ImgHandlerProvider,

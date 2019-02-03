@@ -49,20 +49,17 @@
     </ion-select>
   </ion-item>
 
-  <ion-item>
-    <div class="profile-image">
-      <img src="{{imgurl}}">
-    </div>
-    <div>
-      <button ion-button round outline (click)="chooseimage()">Choose an image</button>
-    </div>
-    <div [hidden]="!moveon">
-      <button ion-button round outline (click)="proceed()">Skip this step</button>
-    </div>
-    <div [hidden]="moveon">
-      <button ion-button round outline (click)="updateproceed()">Upload & proceed</button>
-    </div>
-  </ion-item>
+    <ion-item>
+      <p>{{imageURI}}</p>
+      <button ion-button color="secondary" (click)="getImage()">Get Image</button>
+    </ion-item>
+    <ion-item>
+      <h4>Image Preview</h4>
+      <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />
+    </ion-item>
+    <ion-item>
+      <button ion-button (click)="uploadFile()">Upload</button>
+    </ion-item>
 
   <button ion-button (click)="register(user, profile)">Register</button>
 
