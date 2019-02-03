@@ -51,14 +51,11 @@
 
     <ion-item>
       <p>{{imageURI}}</p>
-      <button ion-button color="secondary" (click)="getImage()">Get Image</button>
+      <button ion-button color="secondary" (click)="openGallery()">Get Image</button>
     </ion-item>
     <ion-item>
       <h4>Image Preview</h4>
-      <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />
-    </ion-item>
-    <ion-item>
-      <button ion-button (click)="uploadFile()">Upload</button>
+      <img src="{{file_uri}}" *ngIf="file_uri" alt="Ionic File" width="300" />
     </ion-item>
 
   <button ion-button (click)="register(user, profile)">Register</button>
