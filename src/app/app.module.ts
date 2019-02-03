@@ -10,9 +10,9 @@ import { ChatPage } from "../pages/chat/chat";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { File } from '@ionic-native/file';
-import { FileChooser } from '@ionic-native/file-chooser/ngx';
-import { FilePath } from '@ionic-native/file-path';
+import { File } from '@ionic-native/file/ngx';
+import {FileChooser} from "@ionic-native/file-chooser/ngx";
+import { FilePath } from '@ionic-native/file-path/ngx';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule} from "@angular/fire/database";
@@ -65,7 +65,6 @@ let config = environment.config;
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ChannelManagerProvider,
     ImgHandlerProvider,
-
   ]
 })
 export class AppModule {}

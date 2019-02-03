@@ -59,6 +59,7 @@ export class ChatPage {
           this.theme = theme.toString();
           this.channelManager.theme = this.theme;
           this.channel = channel.toString();
+          this.channelManager.getChannelUsers(this.channel);
           this.channelManager.channel = this.channel;
           this.channelManager.getInitDate(this.channel);
           this.subscriptionMessage = this.db.list(`Channels/${this.channel}/chats`).valueChanges().subscribe(data => {

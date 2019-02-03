@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from "rxjs/Rx";
+import {Observable, Subscription} from "rxjs/Rx";
 import {
   trigger,
   state,
@@ -7,6 +7,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 /**
  * Generated class for the UsersChatComponent component.
  *
@@ -36,14 +37,18 @@ import {
   ]
 })
 export class UsersChatComponent {
-  users : Array<object> = [{'name' : 'Alexandre'}, {'name': 'Luc'}, {'name': 'Mathieu'}, {'name': 'Nico'}, {'name': 'Naïm'}, {'name': 'lautre pd'}];
+  ChannelUsersSubscription: Subscription;
+  users : object;
   text: string;
   calculatedTop: number=-355;
   click: boolean = false;
   isOpen:boolean = false;
 
-  constructor() {
-    this.text = 'Hello World';
+  constructor(private channelManager: ChannelManagerProvider) {
+    this.ChannelUsersSubscription = this.channelManager.channelUsersSubject.subscribe(data => {
+      this.users = data;
+      console.log(this.users);
+    })
   }
 
   onPick(event:any){
