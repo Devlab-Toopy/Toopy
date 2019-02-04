@@ -18,9 +18,11 @@
   <div id="chatMessage" #chatMessage>
 
     <div class="message" *ngFor="let message of messages">
-      <div class="innerMessage" [class]="message.username == username ? 'innerMessage messageRight' : 'innerMessage messageLeft'">
-        <div class="username">{{message.username}}  :  </div>
-        <div class="message-content">{{message.message}}</div>
+      <div class="username" [class]="message.username == username ? 'username usernameRight' : 'username usernameLeft'">{{message.username}}</div>
+      <div class="little-background-message">
+          <div class="innerMessage" [class]="message.username == username ? 'innerMessage messageRight' : 'innerMessage messageLeft'">
+            <div class="message-content">{{message.message}}</div>
+          </div>
       </div>
     </div>
   </div>
@@ -29,6 +31,7 @@
 <ion-footer>
     <div id="footer">
       <div class="elem"><ion-input type="text" [(ngModel)]="message" placeholder="Chat here..."></ion-input></div>
-      <div class="elem"><button ion-button icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon> </button></div>
+      <div class="elem"><button id="send" ion-button icon-only (click)="sendMessage()">
+      </button></div>
     </div>
 </ion-footer>

@@ -1,6 +1,41 @@
 // http://ionicframework.com/docs/theming/
 
+#profile-picture{
+  width: 150px;
+  height: 150px;
+  border-radius: 100px;
+  background: url(../assets/imgs/avatar-empty.jpeg);
+  background-position: center;
+  background-size: contain;
+  margin: 40px auto 0 auto;
+}
 
+.toolbar-background {
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border: 0px !important;
+  border-bottom-color: transparent !important;
+  border-bottom: none !important;
+}
+
+#content-menu{
+  background: url("../assets/imgs/bg-menu.png");
+  background-size: 103%;
+}
+
+#username{
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+#theme{
+ margin-top: 10px;
+  color: #ffad41;
+  text-align: center;
+}
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These

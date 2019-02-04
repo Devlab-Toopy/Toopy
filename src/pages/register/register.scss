@@ -18,4 +18,34 @@ page-register {
       text-align: center;
     }
 
+    #content-register{
+      background: url("../../assets/imgs/background_inscription.png");
+      background-size: cover;
+    }
+  .item{
+    background: none;
+    margin: 10px 0 10px 0;
+    width: 100%;
+  }
+  ion-label{
+    text-align: center;
+    width: 200px;
+    margin: 0 auto;
+    color: white;
+  }
+  .text-input, ion-select{
+    text-align: center;
+  }
+
+  #register-button{
+    width: 240px;
+    position: relative;
+    margin: 0 auto;
+    height: 35px;
+    background: #ff6e3b;
+    color: white;
+    border-radius: 25px;
+    font-size: 20px;
+
+  }
 }

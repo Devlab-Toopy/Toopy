@@ -1,13 +1,14 @@
 <!-- Generated template for the UsersChatComponent component -->
   <div id="users-chat">
     <div  id="background-users-chat" [@openClose]="isOpen ? 'open' : 'closed'" [style.top.px]="calculatedTop"></div>
-    <div id="content-users" [@openClose]="{value: isOpen ? 'open' : 'closed', calculatedTop : calculatedTop}" [style.top.px]="calculatedTop">
+    <div id="content-users" swipeAll (swipeup)="swipeUp()" [@openClose]="{value: isOpen ? 'open' : 'closed', calculatedTop : calculatedTop}" [style.top.px]="calculatedTop">
       <div id="users-list">
         <div *ngFor="let user of users">
           {{user}}
         </div>
       </div>
       <timer></timer>
+      <div id="content-swipe" swipeAll (swipedown)="swipeDown()"></div>
       <div id="icon-group" (click)="toggle()"></div>
   </div>
 </div>

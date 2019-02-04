@@ -1,17 +1,20 @@
 <ion-menu id="myMenu" [content]="content" type="overlay" side="">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu</ion-title>
+      <ion-title>Toopy</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
+  <ion-content id="content-menu">
 
     <ion-list>
-      <button ion-item="">{{username}}</button>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
+      <div id="profile-picture"></div>
+      <div id="username">{{username}}</div>
+      <div id="theme">Theme : {{theme}}</div>
+
+      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">-->
+        <!--{{p.title}}-->
+      <!--</button>-->
     </ion-list>
   </ion-content>
 

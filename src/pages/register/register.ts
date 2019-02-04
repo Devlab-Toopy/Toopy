@@ -14,7 +14,7 @@ import {ImgHandlerProvider} from "../../providers/imghandler/imghandler";
 import {LoginPage} from "../login/login";
 
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import {Camera} from "@ionic-native/camera/ngx";
 
 /**
  * Generated class for the RegisterPage page.
@@ -92,17 +92,17 @@ async register(user: User, profile: Profile) {
 
 openGallery () {
     let cameraOptions = {
-        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-        destinationType: Camera.DestinationType.FILE_URI,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+        destinationType: this.camera.DestinationType.FILE_URI,
         quality: 100,
         targetWidth: 1000,
         targetHeight: 1000,
-        encodingType: Camera.EncodingType.JPEG,
+        encodingType: this.camera.EncodingType.JPEG,
         correctOrientation: true
-    }
+    };
 
-    Camera.getPicture(cameraOptions)
-        .then(file_uri => this.imageSrc = file_uri,
+    this.camera.getPicture(cameraOptions)
+        .then(file_uri => this.imageURI = file_uri,
             err => console.log(err));
 }
 

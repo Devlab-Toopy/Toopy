@@ -24,9 +24,9 @@ import {ChannelManagerProvider} from "../../providers/channel-manager/channel-ma
         'top': '{{calculatedTop}}px'
       }), {params: {calculatedTop: 0}}),
 
-      state('open', style({
+      state('closed', style({
         'top': '{{calculatedTop}}px'
-      }), {params: {calculatedTop: -355}}),
+      }), {params: {calculatedTop: -320}}),
       transition('open => closed', [
         animate('0.5s ease-in-out'),
       ]),
@@ -40,10 +40,10 @@ export class UsersChatComponent {
   ChannelUsersSubscription: Subscription;
   users : object;
   text: string;
-  calculatedTop: number=-355;
+  calculatedTop: number=-320;
   click: boolean = false;
   isOpen:boolean = false;
-
+  state: string = 'closed';
   constructor(private channelManager: ChannelManagerProvider) {
     this.ChannelUsersSubscription = this.channelManager.channelUsersSubject.subscribe(data => {
       this.users = data;
@@ -61,6 +61,15 @@ export class UsersChatComponent {
       },
       () => {},
       () => {});
+  }
+
+  swipeDown(){
+    console.log('swipedown');
+    this.isOpen = true;
+  }
+
+  swipeUp(){
+    this.isOpen = false;
   }
 
   onLeave(){

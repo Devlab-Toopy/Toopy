@@ -9,6 +9,8 @@ import { ListPage } from '../pages/list/list';
 import { ChatPage } from "../pages/chat/chat";
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
+import {Subscription} from "rxjs/Rx";
+import {ChannelManagerProvider} from "../providers/channel-manager/channel-manager";
 
 @Component({
   templateUrl: 'app.html'
@@ -19,10 +21,18 @@ export class MyApp {
   rootPage: any = 'LoginPage';
   currentUser: any;
   username: string;
+  theme : string;
+  currentUserSubscription: Subscription;
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private afAuth: AngularFireAuth) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private afAuth: AngularFireAuth, private channelManager: ChannelManagerProvider) {
     this.initializeApp();
+
+    this.currentUserSubscription = this.channelManager.currentUserSubject.subscribe( data => {
+      this.username = this.channelManager.currentUser['displayName'];
+      console.log(this.channelManager.currentUserProfile);
+      this.theme = this.channelManager.currentUserProfile['theme'];
+    });
 
     // used for an example of ngFor and navigation
     this.pages = [

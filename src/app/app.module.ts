@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicSwipeAllModule } from 'ionic-swipe-all';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -33,7 +34,6 @@ import { Camera } from '@ionic-native/camera/ngx';
 
 let config = environment.config;
 
-
 @NgModule({
   declarations: [
     MyApp,
@@ -50,6 +50,7 @@ let config = environment.config;
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
+    IonicSwipeAllModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

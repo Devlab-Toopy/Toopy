@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from "@angular/fire/database";
 import {Subject} from "rxjs/Rx";
 import { map } from 'rxjs/operators';
+import * as firebase from 'firebase';
 
 /*
   Generated class for the ChannelManagerProvider provider.
@@ -18,6 +19,8 @@ export class ChannelManagerProvider {
   public themeSubject: Subject<object> = new Subject<object>();
   public channelUsersSubject: Subject<object> = new Subject<object>();
   public allChannelSubject: Subject<object> = new Subject<object>();
+  public currentUserSubject: Subject<object> = new Subject<object>();
+  public timerSubject: Subject<object> = new Subject<object>();
   public channelUsers: object;
   public channelObject: object;
   date: object;
@@ -28,9 +31,10 @@ export class ChannelManagerProvider {
   public theme: string;
   public channels: object;
   public currentUser: object;
+  public currentUserProfile: object;
   public activeChannels: object;
-  public timerCount: number = 7;
-  public timerMin: number = 4;
+  public timerCount: number;
+  public timerMin: number;
 
   constructor(public db: AngularFireDatabase) {
   }
@@ -51,6 +55,20 @@ export class ChannelManagerProvider {
     this.allChannelSubject.next(channels)
   }
 
+  public getCurrentUser(){
+    this.currentUser = firebase.auth().currentUser;
+
+    this.subscriptionMessage = this.db.object(`profile/${this.currentUser['uid']}`).snapshotChanges().map(action => {
+      const $key = action.payload.key;
+      const data = { $key, ...action.payload.val() };
+      return data;
+    }).subscribe(profile => {
+      this.currentUserProfile = profile;
+      this.currentUserSubject.next();
+    })
+  }
+
+
   public getInitDate(channel: string){
     this.subscriptionMessage = this.db.list(`Channels/${channel}/init`).valueChanges().subscribe(data => {
       this.date = data[0];
@@ -62,6 +80,19 @@ export class ChannelManagerProvider {
     this.subscriptionMessage = this.db.list('Themes').valueChanges().subscribe(data => {
       this.themes = data;
       this.emitThemeSubject(data);
+    })
+  }
+
+  public getTimer(){
+    this.subscriptionMessage = this.db.object('Timer').snapshotChanges().map(action => {
+      const $key = action.payload.key;
+      const data = { $key, ...action.payload.val() };
+      return data;
+    }).subscribe(timer => {
+      this.timerCount = timer['TimerCount'];
+      console.log(this.timerCount);
+      this.timerMin = timer['TimerMin'];
+      this.timerSubject.next();
     })
   }
 
@@ -95,12 +126,13 @@ export class ChannelManagerProvider {
         const data = { $key, ...action.payload.val() };
         return data;
       }).subscribe(channels => {
-        this.activeChannels = channels;
+      this.activeChannels = channels;
     })
   }
 
   public joinChannel(name: string, user:object){
     this.db.object(`/profile/${user['uid']}`).update({channel: name});
+    this.db.object(`/Channels/${name}/users`).update({[user['uid']]: user['username']})
   }
 
   public createChannel(theme: string, user:object){
@@ -156,7 +188,7 @@ export class ChannelManagerProvider {
         },
         'theme' : theme,
         'active' : 'true',
-        'users' : {[user['displayName']]: user['displayName']},
+        'users' : {[user['uid']]: user['displayName']},
       };
     this.db.object(`/profile/${user['uid']}`).update({channel: newChannelName});
     this.db.object(`/profile/${user['uid']}`).update({theme: theme});

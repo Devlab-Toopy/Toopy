@@ -25,6 +25,7 @@ export class TimerComponent {
 
   private themeSubscription: Subscription;
   private initDateSubscription: Subscription;
+  private timerValuesSubscription: Subscription
   private allChannelsSubscription: Subscription;
   public message: string;
   private endDate: Date;
@@ -35,51 +36,77 @@ export class TimerComponent {
   public theme: string;
   public channels: object;
   public currentUser: object;
+  public days : string;
+  public hours : string;
+  public mins : string;
+  public secs: string;
+  public count : object;
 
   constructor(private channelManager: ChannelManagerProvider, public alertCtrl: AlertController, public db: AngularFireDatabase) {
     this.initDateSubscription = this.channelManager.dateSubject.subscribe(
       (date: object) => {
-        this.theme = this.channelManager.theme;
-        if(date){
-          this.initDate = new Date(date.toString());
-          let myDate = this.initDate.setDate(this.initDate.getDate() + this.channelManager.timerCount);
-          this.endDate = new Date(myDate);
-          Observable.interval(1000).map((x) => {
-            this.diff = (this.endDate.getTime() - Date.now()) / 1000;
-          }).takeWhile(() => { return this.diff >= 0; }).subscribe(
-            (x) => {
-              this.message = this.dhms(this.diff);
-            },
-            () => {},
-            () => {
-              this.showConfirm();
-            });
-        }
+        this.channelManager.getTimer();
+        this.timerValuesSubscription = this.channelManager.timerSubject.subscribe(data => {
+          this.theme = this.channelManager.theme;
+          if(date){
+            this.initDate = new Date(date.toString());
+            let myDate = this.initDate.setDate(this.initDate.getDate() + this.channelManager.timerCount);
+            this.endDate = new Date(myDate);
+            Observable.interval(1000).map((x) => {
+              this.diff = (this.endDate.getTime() - Date.now()) / 1000;
+            }).takeWhile(() => { return this.diff >= 0; }).subscribe(
+              (x) => {
+                this.dhms(this.diff);
+              },
+              () => {},
+              () => {
+                this.showConfirm();
+              });
+          }
+        });
       }
     );
   }
 
   dhms(delta) {
     let days = Math.floor(delta / 86400);
+    if(days < 10){
+      this.days = '0'+days.toString()
+    }else{
+      this.days = days.toString()
+    }
     delta -= days * 86400;
 
 // calculate (and subtract) whole hours
     let hours = Math.floor(delta / 3600) % 24;
+    if(hours < 10){
+      this.hours = '0'+hours.toString()
+    }else{
+      this.hours = hours.toString()
+    }
     delta -= hours * 3600;
-
 // calculate (and subtract) whole minutes
     let mins = Math.floor(delta / 60) % 60;
+    if(mins < 10){
+      this.mins = '0'+mins.toString()
+    }else{
+      this.mins = mins.toString()
+    }
     delta -= mins * 60;
 
 // what's left is seconds
     let secs = Math.round(delta % 60);
-
-    return [
-      days + 'd',
-      hours + 'h',
-      mins + 'm',
-      secs + 's'
-    ].join(' ');
+    if(secs < 10){
+      this.secs = '0'+secs.toString()
+    }else{
+      this.secs = secs.toString()
+    }
+    // return [
+    //   days + 'd',
+    //   hours + 'h',
+    //   mins + 'm',
+    //   secs + 's'
+    // ].join(' ');
   }
 
 

@@ -5,6 +5,7 @@ import {ChannelManagerProvider} from "../../providers/channel-manager/channel-ma
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {UsersChatComponent} from "../../components/users-chat/users-chat";
+import {delay} from "rxjs/internal/operators";
 
 /**
  * Generated class for the ChatPage page.
@@ -33,7 +34,6 @@ export class ChatPage {
   theme: string;
   channel: string;
   channelObject: any;
-
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public db: AngularFireDatabase,
@@ -43,10 +43,10 @@ export class ChatPage {
               public menuCtrl: MenuController) {
     this.afAuth.authState.subscribe(data => {
       if(data.email){
-        this.currentUser = firebase.auth().currentUser;
+        this.channelManager.getCurrentUser();
+        this.currentUser = this.channelManager.currentUser;
         this.channelManager.currentUser = this.currentUser;
         this.username = this.currentUser.displayName;
-
         this.toast.create({
           message: 'WELCOME',
           duration: 2000
@@ -64,10 +64,8 @@ export class ChatPage {
           this.channelManager.getInitDate(this.channel);
           this.subscriptionMessage = this.db.list(`Channels/${this.channel}/chats`).valueChanges().subscribe(data => {
             this.messages = data;
-            console.log('new message');
             this.content.scrollToBottom(100);
           });
-
           this.subscriptionMessage = this.db.list(`Channels/${this.channel}`).valueChanges().subscribe(data => {
             this.channelObject = data;
             this.channelManager.channelObject = this.channelObject;
@@ -82,15 +80,16 @@ export class ChatPage {
       }
     });
 
-
-
     // this.username = this.navParams.get('username');
     // this.user = this.navParams.get('user');
     this.menuCtrl.enable(true, 'myMenu');
   }
 
   ionViewDidLoad(){
+  }
 
+  swipeDown(event: any): any {
+    console.log('Swipe All', event);
   }
 
   sendMessage(){
@@ -98,6 +97,7 @@ export class ChatPage {
       username: this.username,
       message: this.message
     }).then( () => {
+      this.content.scrollToBottom(100);
     });
     this.message = '';
   }

@@ -32,14 +32,8 @@ export class LoginPage {
 
   ionViewDidLoad(){
     this.currentUser = firebase.auth().currentUser;
-
     console.log(this.currentUser);
-    // if(this.currentUser){
-    //   this.navCtrl.setRoot(ChatPage,{
-    //     username: 'email',
-    //     user : 'user'
-    //   })
-    // }
+
   }
 
 

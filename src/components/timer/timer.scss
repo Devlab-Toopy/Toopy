@@ -1,3 +1,24 @@
 timer {
+  #timer{
+    position: relative;
+    top: 130px;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    div{
+      float: left;
+    }
+    .num{
+      text-align: center;
+      div:first-child{
+        background: rgba(255, 255, 255, 0.2);
+        font-size: 30px;
+        padding: 5px;
+        margin: 10px;
+      }
+    }
+  }
 
 }
