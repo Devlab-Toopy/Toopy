@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { IonicSwipeAllModule } from 'ionic-swipe-all';
 
 import { MyApp } from './app.component';
@@ -70,7 +70,6 @@ let config = environment.config;
     // FileUploadOptions,
     // FileTransferObject,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
     ChannelManagerProvider,
     ImgHandlerProvider,
   ]

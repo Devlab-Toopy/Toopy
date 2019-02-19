@@ -1,5 +1,8 @@
 import {Component, NgZone} from '@angular/core';
-import {IonicPage, MenuController, NavController, NavParams, LoadingController, ToastController} from 'ionic-angular';
+import {
+  IonicPage, MenuController, NavController, NavParams, LoadingController, ToastController,
+  AlertController
+} from 'ionic-angular';
 import {User} from '../../models/user';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {HomePage} from "../home/home";
@@ -44,7 +47,7 @@ export class RegisterPage {
               public navParams: NavParams, private channelManager: ChannelManagerProvider, public menuCtrl: MenuController,
               public imgService: ImgHandlerProvider, public zone: NgZone,
               public transfer: FileTransfer, public camera: Camera, public loadingCtrl: LoadingController,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController, public alertCtrl: AlertController) {
     this.menuCtrl.enable(false, 'myMenu');
 
   }
@@ -52,6 +55,7 @@ export class RegisterPage {
   ionViewDidLoad(){
   this.channelManager.getThemes();
   this.channelManager.getAllActiveChannels();
+  this.channelManager.getTimer();
   this.themeSubscription = this.channelManager.themeSubject.subscribe(
     (themes: object) => {
       this.themes = themes;
@@ -61,33 +65,47 @@ export class RegisterPage {
 
 
 async register(user: User, profile: Profile) {
-    try {
-        const result = await this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
-        this.currentUser = firebase.auth().currentUser;
-        this.currentUser.updateProfile({
-          displayName: this.username,
+    if(user.email, user.password, profile.firstName, profile.lastName, profile.theme){
+
+      this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
+        .then((res) => {
+          this.currentUser = firebase.auth().currentUser;
+          this.currentUser.updateProfile({
+            displayName: this.username,
             photoURL: 'https://firebasestorage.googleapis.com/v0/b/myapp-4eadd.appspot.com/o/chatterplace.png?alt=media&token=e51fa887-bfc6-48ff-87c6-e2c61976534e'
-        }).then(function() {
+          }).then(function() {
 
-          this.navCtrl.setRoot(ChatPage);
-        }).catch(function(error) {
-          // An error happened.
+            this.navCtrl.setRoot(ChatPage);
+          }).catch(function(error) {
+            // An error happened.
+          });
+        })
+        .catch((err)=> {
+          //Do as you please here
+          this.errorAlert(err);
         });
-    }
-    catch(e){
-      console.error(e);
-    }
 
-  this.afAuth.authState.take(1).subscribe(auth =>{
-      this.afDatabase.object(`profile/`).update({[auth.uid]: profile})
+      this.afAuth.authState.take(1).subscribe(auth =>{
+        this.afDatabase.object(`profile/`).update({[auth.uid]: profile})
           .then(() => {
-        console.log(profile.theme);
-        console.log(auth);
+            console.log(profile.theme);
+            this.channelManager.username = this.username;
             this.channelManager.changeChannel(profile.theme, auth, true);
             this.navCtrl.pop();
           })
-  })
+      })
+    }else{
+      this.errorAlert('Tous les champs sont à remplir ');
+    }
+}
 
+  async errorAlert(error: string) {
+    const alert = this.alertCtrl.create({
+      title: 'Erreur',
+      message: error,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 openGallery () {
@@ -104,6 +122,5 @@ openGallery () {
     this.camera.getPicture(cameraOptions)
         .then(file_uri => this.imageURI = file_uri,
             err => console.log(err));
-}
-
+  }
 }

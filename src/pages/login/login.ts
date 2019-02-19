@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, MenuController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, MenuController, NavController, NavParams} from 'ionic-angular';
 import {User} from "../../models/user";
 import {AngularFireAuth} from '@angular/fire/auth';
 import {ChatPage} from "../chat/chat";
@@ -20,12 +20,15 @@ import {default as firebase, storage} from "firebase";
 })
 export class LoginPage {
 
+  error: boolean;
+  errorMessage: string;
   user = {} as User;
   currentUser: any;
 
   constructor(private afAuth: AngularFireAuth,
               public navCtrl: NavController, public navParams: NavParams,
-              public menuCtrl: MenuController, public storage: IonicStorageModule) {
+              public menuCtrl: MenuController, public storage: IonicStorageModule,
+              public alertCtrl: AlertController) {
 
       this.menuCtrl.enable(false, 'myMenu');
   }
@@ -39,19 +42,28 @@ export class LoginPage {
 
   async login(user: User) {
       // storage.set('name', 'Max');
-      try {
-          const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
-          console.log(result);
-          this.currentUser = firebase.auth().currentUser;
-          if(result){
-            this.navCtrl.setRoot(ChatPage, {'email' : this.currentUser.email});
-          }
-      }
-      catch(e){
-          console.error(e);
-      }
+         this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
+           .then((res) => {
+           console.log("that's good");
+               this.navCtrl.setRoot(ChatPage);
+           })
+           .catch((err)=> {
+             //Do as you please here
+             this.errorAlert(err);
+           });
+          // this.currentUser = firebase.auth().currentUser;
+          // if(result){
+          //   this.navCtrl.setRoot(ChatPage, {'email' : this.currentUser.email});
+          // }
+  }
 
-
+  async errorAlert(error: string) {
+    const alert = this.alertCtrl.create({
+      title: 'Erreur',
+      message: error,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
   register() {

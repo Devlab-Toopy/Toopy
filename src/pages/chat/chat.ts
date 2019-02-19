@@ -42,7 +42,6 @@ export class ChatPage {
               private toast: ToastController,
               public menuCtrl: MenuController) {
     this.afAuth.authState.subscribe(data => {
-      if(data.email){
         this.channelManager.getCurrentUser();
         this.currentUser = this.channelManager.currentUser;
         this.channelManager.currentUser = this.currentUser;
@@ -71,13 +70,6 @@ export class ChatPage {
             this.channelManager.channelObject = this.channelObject;
           })
         });
-      }
-      else{
-        this.toast.create({
-          message: 'Could not find authentification',
-          duration: 3000
-        }).present();
-      }
     });
 
     // this.username = this.navParams.get('username');
@@ -86,6 +78,7 @@ export class ChatPage {
   }
 
   ionViewDidLoad(){
+
   }
 
   swipeDown(event: any): any {

@@ -6,6 +6,7 @@ page-chat {
     color: white;
     border-radius: 3px;
     margin: 5px;
+    max-width: 80%;
     overflow: hidden;
   }
   .message-content{
@@ -19,11 +20,10 @@ page-chat {
     margin-top: 60px;
   }
   .innerMessage.messageRight{
-    background: #ff6e3b ;
+    background: #ff6e3b;
   }
   .little-background-message{
     width: 100%;
-
   }
   .elem button {
     border-radius: 0;
