@@ -58,14 +58,13 @@ export class ChannelManagerProvider {
 
   public getCurrentUser(){
     this.currentUser = firebase.auth().currentUser;
-
     this.subscriptionMessage = this.db.object(`profile/${this.currentUser['uid']}`).snapshotChanges().map(action => {
-      const $key = action.payload.key;
-      const data = { $key, ...action.payload.val() };
+      const uid = action.payload.key;
+      const data = { uid, ...action.payload.val() };
       return data;
     }).subscribe(profile => {
-      this.currentUserProfile = profile;
-      this.currentUserSubject.next();
+      this.currentUser = profile;
+      this.currentUserSubject.next(this.currentUser);
     })
   }
 
@@ -98,8 +97,19 @@ export class ChannelManagerProvider {
   }
 
   public getChannelUsers(channel: string){
-    this.subscriptionMessage = this.db.list(`Channels/${channel}/users`).valueChanges().subscribe(data => {
-      this.channelUsers = data;
+    this.subscriptionMessage = this.db.list(`Channels/${channel}/users`).snapshotChanges().subscribe(users => {
+      let channelUsers = [];
+      for(let user of users){
+        console.log(user.payload.val());
+        let uid = user['key'];
+        this.db.object(`/profile/${uid}`).snapshotChanges().subscribe(profile => {
+          let data = profile.payload.val();
+          data = Object.assign(data, {'uid' : uid, 'username' : user.payload.val()});
+          channelUsers.push(data);
+        });
+      }
+      this.channelUsers = channelUsers;
+      console.log(this.channelUsers);
       this.emitChannelUsersSubject(this.channelUsers);
     })
   }
@@ -129,34 +139,17 @@ export class ChannelManagerProvider {
       for(let channel of channels){
         let data = JSON.stringify(channel['payload']);
         data = JSON.parse(data);
-        // console.log(data);
-        // console.log(data['init']['date']);
         let activechannel = { 'key' : channel['key'], 'data' : data};
         activeChannels.push(activechannel);
       }
       this.activeChannels = activeChannels;
-      // for(let channel of this.activeChannels){
-      //   console.log(channel['data']['init']['date']);
-      // }
-      // let keysLength = Object.keys(this.activeChannels).length;
-      // let keys = [];
-      // for(let i =0; i < keysLength; i++){
-      //   keys.push(this.activeChannels[i].val());
-      //   // console.log('active channels : '+ this.activeChannels[i].key);
-      // }
-      // console.log("keys : "+keys);
-      // console.log(this.activeChannels[0]);
-      // console.log('FUNCTION PASSED -----------');
-      //   for(let i=0; i<10; i++){
-      //     console.log('active channels : '+ this.activeChannels[i].key);
-      //   }
     })
   }
 
   public joinChannel(name: string, user:object, theme: string)
   {
-    if(user['displayName']){
-      this.db.object(`/Channels/${name}/users`).update({[user['uid']]: user['displayName']});
+    if(user['username']){
+      this.db.object(`/Channels/${name}/users`).update({[user['uid']]: user['username']});
     }else{
       this.db.object(`/Channels/${name}/users`).update({[user['uid']]: this.username});
     }
@@ -218,12 +211,14 @@ export class ChannelManagerProvider {
         },
         'theme' : theme,
         'active' : 'true',
-        'users' : {[user['uid']]: user['displayName']},
+        'users' : {[user['uid']]: user['username']},
       };
+    console.log(newChannelName);
+    console.log(channel);
     this.db.object(`/profile/${user['uid']}`).update({channel: newChannelName});
     this.db.object(`/profile/${user['uid']}`).update({theme: theme});
     this.db.object(`/Channels`).update({[newChannelName]: channel});
-    this.db.object(`/Channels/${newChannelName}/users`).update({[user['uid']]: user['displayName']});
+    this.db.object(`/Channels/${newChannelName}/users`).update({[user['uid']]: user['username']});
   }
 
   changeChannel(theme: string, user: object, newUser: boolean){
@@ -247,8 +242,10 @@ export class ChannelManagerProvider {
       }
     }
     if(newchannel){
-      // this.moveChannelToPast();
-      // this.createChannel(theme, user);
+      if(!newUser){
+        this.moveChannelToPast();
+      }
+      this.createChannel(theme, user);
     }
   }
 

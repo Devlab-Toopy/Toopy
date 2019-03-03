@@ -31,6 +31,8 @@ import {LoginPage} from "../pages/login/login";
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import {FavoritesPage} from "../pages/favorites/favorites";
+import { PrivateChatProvider } from '../providers/private-chat/private-chat';
 
 let config = environment.config;
 
@@ -40,6 +42,7 @@ let config = environment.config;
     HomePage,
     ListPage,
     ChatPage,
+    FavoritesPage,
     TimerComponent,
     UsersChatComponent,
   ],
@@ -58,6 +61,7 @@ let config = environment.config;
     HomePage,
     ListPage,
     ChatPage,
+    FavoritesPage
   ],
   providers: [
     IonicStorageModule,
@@ -72,6 +76,7 @@ let config = environment.config;
     Camera,
     ChannelManagerProvider,
     ImgHandlerProvider,
+    PrivateChatProvider,
   ]
 })
 export class AppModule {}

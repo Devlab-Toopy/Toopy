@@ -43,21 +43,15 @@ export class ChatPage {
               public menuCtrl: MenuController) {
     this.afAuth.authState.subscribe(data => {
         this.channelManager.getCurrentUser();
-        this.currentUser = this.channelManager.currentUser;
-        this.channelManager.currentUser = this.currentUser;
-        this.username = this.currentUser.displayName;
-        this.toast.create({
-          message: 'WELCOME',
-          duration: 2000
-        }).present();
-        this.subscriptionMessage = this.db.list(`profile/${this.currentUser.uid}`).valueChanges().subscribe(data => {
+        this.subscriptionMessage = this.channelManager.currentUserSubject.subscribe((currentUser) => {
+          this.currentUser = currentUser;
+          this.username = currentUser['username'];
+          console.log(currentUser);
           this.channelManager.getAllActiveChannels();
           this.channelManager.getThemes();
-          let channel = data[0];
-          let theme = data[1];
-          this.theme = theme.toString();
+          this.theme = currentUser['theme'];
           this.channelManager.theme = this.theme;
-          this.channel = channel.toString();
+          this.channel = currentUser['channel'];
           this.channelManager.getChannelUsers(this.channel);
           this.channelManager.channel = this.channel;
           this.channelManager.getInitDate(this.channel);
@@ -70,6 +64,10 @@ export class ChatPage {
             this.channelManager.channelObject = this.channelObject;
           })
         });
+        // this.toast.create({
+        //   message: 'WELCOME',
+        //   duration: 2000
+        // }).present();
     });
 
     // this.username = this.navParams.get('username');

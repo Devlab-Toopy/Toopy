@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage} from '../pages/login/login';
 import { ListPage } from '../pages/list/list';
 import { ChatPage } from "../pages/chat/chat";
+import { FavoritesPage} from "../pages/favorites/favorites";
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {Subscription} from "rxjs/Rx";
@@ -28,17 +29,15 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private afAuth: AngularFireAuth, private channelManager: ChannelManagerProvider) {
     this.initializeApp();
 
-    this.currentUserSubscription = this.channelManager.currentUserSubject.subscribe( data => {
-      this.username = this.channelManager.currentUser['displayName'];
-      console.log(this.channelManager.currentUserProfile);
-      this.theme = this.channelManager.currentUserProfile['theme'];
+    this.currentUserSubscription = this.channelManager.currentUserSubject.subscribe( currentUser => {
+      this.username = currentUser['username'];
+      this.theme = currentUser['theme'];
     });
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
       { title: 'Chat', component: ChatPage },
+      { title: 'Favoris', component: FavoritesPage },
     ];
 
     // this.afAuth.authState.subscribe(data => {

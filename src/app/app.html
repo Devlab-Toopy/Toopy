@@ -11,7 +11,9 @@
       <div id="profile-picture"></div>
       <div id="username">{{username}}</div>
       <div id="theme">Theme : {{theme}}</div>
-
+      <button menuClose ion-item *ngFor="let page of pages" (click)="openPage(page)">
+        {{page.title}}
+      </button>
       <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">-->
         <!--{{p.title}}-->
       <!--</button>-->

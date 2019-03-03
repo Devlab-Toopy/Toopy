@@ -8,6 +8,9 @@ import {
   transition,
 } from '@angular/animations';
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
+import {AngularFireDatabase} from "@angular/fire/database";
+import {AlertController} from "ionic-angular";
+import {PrivateChatProvider} from "../../providers/private-chat/private-chat";
 /**
  * Generated class for the UsersChatComponent component.
  *
@@ -44,23 +47,44 @@ export class UsersChatComponent {
   click: boolean = false;
   isOpen:boolean = false;
   state: string = 'closed';
-  constructor(private channelManager: ChannelManagerProvider) {
+  userFocus: boolean = false;
+  selectedUser: object;
+  favorite: boolean = false;
+  currentUser: object;
+
+  constructor(private channelManager: ChannelManagerProvider, public db: AngularFireDatabase, public alertCtrl: AlertController, private PrivateChat: PrivateChatProvider) {
     this.ChannelUsersSubscription = this.channelManager.channelUsersSubject.subscribe(data => {
       this.users = data;
-      console.log(this.users);
+      this.selectedUser = {'username ' : 'user'};
+      this.currentUser = this.channelManager.currentUser;
     })
   }
 
-  onPick(event:any){
-   this.click = true;
-    Observable.interval(100).map((x) => {
+  onAddFavorite(user){
+    this.db.object(`/profile/${this.currentUser['uid']}/favorites`).update({[user['uid']] : user['username']}).then(() => {
+      this.favorite = true;
+      this.popUp(`L'utilisateur ${user['username']} a bien été ajouté aux favoris ! `);
+      this.selectedUser = user;
+      this.PrivateChat.openChat(this.currentUser, user);
+    });
+  }
 
-    }).takeWhile(() => { return this.click == true; }).subscribe(
-      (x) => {
-        console.log(event.clientY)
-      },
-      () => {},
-      () => {});
+  onRemoveFavorite(user){
+    console.log(user);
+    this.db.object(`/profile/${this.currentUser['uid']}/favorites/${user['uid']}`).remove().then(() => {
+      this.favorite = false;
+      this.popUp(`L'utilisateur ${user['username']} a bien été enlevé des favoris ! `);
+      this.selectedUser = user;
+    });
+  }
+
+  async popUp(message: string) {
+    const alert = this.alertCtrl.create({
+      title: 'Terminé',
+      message: message,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
   swipeDown(){
@@ -78,5 +102,20 @@ export class UsersChatComponent {
 
   toggle() {
     this.isOpen = !this.isOpen;
+  }
+
+  focusUser(user){
+    this.userFocus = true;
+    this.selectedUser = user;
+    let favorite = this.db.object(`profile/${this.currentUser['uid']}/favorites/${user['uid']}`).valueChanges().subscribe((data) =>{
+      if(data){
+        this.favorite = true;
+      }else{
+        this.favorite = false;
+      }
+    });
+  }
+  closeFocusUser(){
+    this.userFocus = false;
   }
 }

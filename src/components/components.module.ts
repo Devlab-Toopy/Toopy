@@ -3,9 +3,11 @@ import { TimerComponent } from './timer/timer';
 import { UsersChatComponent } from './users-chat/users-chat';
 @NgModule({
 	declarations: [TimerComponent,
-    UsersChatComponent],
+    UsersChatComponent,
+    ],
 	imports: [],
 	exports: [TimerComponent,
-    UsersChatComponent]
+    UsersChatComponent,
+    ]
 })
 export class ComponentsModule {}

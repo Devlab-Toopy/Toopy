@@ -71,7 +71,6 @@ async register(user: User, profile: Profile) {
         .then((res) => {
           this.currentUser = firebase.auth().currentUser;
           this.currentUser.updateProfile({
-            displayName: this.username,
             photoURL: 'https://firebasestorage.googleapis.com/v0/b/myapp-4eadd.appspot.com/o/chatterplace.png?alt=media&token=e51fa887-bfc6-48ff-87c6-e2c61976534e'
           }).then(function() {
 

@@ -122,7 +122,7 @@ export class TimerComponent {
         {
           text: 'Nope',
           handler: () => {
-                this.currentUser = firebase.auth().currentUser;
+                this.currentUser = this.channelManager.currentUser;
                 this.channelManager.changeChannel(this.theme, this.currentUser, false);
           }
         },
@@ -163,7 +163,7 @@ export class TimerComponent {
       handler: data => {
         console.log(data);
         let choosenTheme = data;
-        this.currentUser = firebase.auth().currentUser;
+        this.currentUser = this.channelManager.currentUser;
         this.channelManager.changeChannel(choosenTheme, this.currentUser, false)
       }
     });

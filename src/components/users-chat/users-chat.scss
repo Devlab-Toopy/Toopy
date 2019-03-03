@@ -12,22 +12,49 @@ users-chat {
     width: 100%;
     height: 430px;
   }
-
   #content-users{
     z-index: 3;
     padding: 50px 50px 0 50px;
     color: white;
     position: absolute;
     width: 100%;
-    height: 437px;
+    height: 438px;
     #users-list{
       column-count: 2;
       text-align: center;
+      font-size: 16px;
+      height: 180px;
       div{
         margin-bottom: 15px;
       }
     }
-
+    #user-focus-mode{
+      p{
+        text-align: center;
+        font-size: 15px;
+        margin-top: 10px;
+        padding-top: 30px;
+      }
+      #close{
+        font-size: 60px;
+        position: absolute;
+        right: 50px;
+      }
+      .favorite{
+        position: relative;
+        left: 30px;
+        font-size: 30px;
+      }
+      #picture{
+          width: 150px;
+          height: 150px;
+          border-radius: 100px;
+          background: url(../../assets/imgs/avatar-empty.jpeg);
+          background-position: center;
+          background-size: contain;
+          margin: 20px auto 0 auto;
+      }
+    }
   }
   #content-swipe{
     z-index: 10;
