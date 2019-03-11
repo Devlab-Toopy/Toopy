@@ -63,8 +63,9 @@ export class ChannelManagerProvider {
       const data = { uid, ...action.payload.val() };
       return data;
     }).subscribe(profile => {
-      this.currentUser = profile;
-      this.currentUserSubject.next(this.currentUser);
+      this.currentUserProfile = profile;
+      console.log(this.currentUserProfile);
+      this.currentUserSubject.next(this.currentUserProfile);
     })
   }
 

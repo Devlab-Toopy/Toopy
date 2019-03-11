@@ -56,7 +56,7 @@ export class UsersChatComponent {
     this.ChannelUsersSubscription = this.channelManager.channelUsersSubject.subscribe(data => {
       this.users = data;
       this.selectedUser = {'username ' : 'user'};
-      this.currentUser = this.channelManager.currentUser;
+      this.currentUser = this.channelManager.currentUserProfile;
     })
   }
 

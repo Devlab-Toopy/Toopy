@@ -33,6 +33,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import {FavoritesPage} from "../pages/favorites/favorites";
 import { PrivateChatProvider } from '../providers/private-chat/private-chat';
+import {PrivateChatPage} from "../pages/private-chat/private-chat";
 
 let config = environment.config;
 
@@ -45,6 +46,7 @@ let config = environment.config;
     FavoritesPage,
     TimerComponent,
     UsersChatComponent,
+    PrivateChatPage
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ let config = environment.config;
     HomePage,
     ListPage,
     ChatPage,
-    FavoritesPage
+    FavoritesPage,
+    PrivateChatPage
   ],
   providers: [
     IonicStorageModule,

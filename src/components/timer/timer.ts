@@ -122,7 +122,7 @@ export class TimerComponent {
         {
           text: 'Nope',
           handler: () => {
-                this.currentUser = this.channelManager.currentUser;
+                this.currentUser = this.channelManager.currentUserProfile;
                 this.channelManager.changeChannel(this.theme, this.currentUser, false);
           }
         },
@@ -163,7 +163,7 @@ export class TimerComponent {
       handler: data => {
         console.log(data);
         let choosenTheme = data;
-        this.currentUser = this.channelManager.currentUser;
+        this.currentUser = this.channelManager.currentUserProfile;
         this.channelManager.changeChannel(choosenTheme, this.currentUser, false)
       }
     });
