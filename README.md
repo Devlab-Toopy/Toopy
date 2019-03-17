@@ -11,3 +11,5 @@ export const environment = {
     //Ici mettre le contenu pour API KEY, APPLICATION KEY, etc.. que l'onretrouve sur firebase dans "Intégrer firebase à ma web app"
   }
 };
+
+Pour accéder à Firebase, merci de demander les logs aux personnes concernées.
