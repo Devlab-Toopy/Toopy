@@ -61,10 +61,11 @@ export class UsersChatComponent {
   }
 
   onAddFavorite(user){
-    this.db.object(`/profile/${this.currentUser['uid']}/favorites`).update({[user['uid']] : user['username']}).then(() => {
+    this.db.object(`/profile/${this.currentUser['uid']}/favorites`).update({[user['uid']] : {"username" : user['username']}}).then(() => {
       this.favorite = true;
       this.popUp(`L'utilisateur ${user['username']} a bien été ajouté aux favoris ! `);
       this.selectedUser = user;
+      this.db.object(`/profile/${user['uid']}/favorites`).update({[this.currentUser['uid']] : {"username" : this.currentUser['username']}});
       this.PrivateChat.openChat(this.currentUser, user);
     });
   }

@@ -1,0 +1,39 @@
+<!--
+  Generated template for the PrivateChatPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon id="icon-burger" name="menu"></ion-icon>
+    </button>
+    <ion-title>Groupe</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngFor="let user of users">{{user['username']}}</div>
+</ion-content>
+<ion-content padding>
+  <div id="chatMessage" #chatMessage>
+
+    <div class="message" *ngFor="let message of messages">
+      <div class="username" [class]="message.username == username ? 'username usernameRight' : 'username usernameLeft'">{{message.username}}</div>
+      <div class="little-background-message">
+        <div class="innerMessage" [class]="message.username == username ? 'innerMessage messageRight' : 'innerMessage messageLeft'">
+          <div class="message-content">{{message.message}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div id="footer">
+    <div class="elem"><ion-input type="text" [(ngModel)]="message" placeholder="Chat here..."></ion-input></div>
+    <div class="elem"><button id="send" ion-button icon-only (click)="sendMessage()">
+    </button></div>
+  </div>
+</ion-footer>

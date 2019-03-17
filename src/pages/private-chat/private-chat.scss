@@ -1,0 +1,100 @@
+page-private-chat {
+  .innerMessage {
+    display: inline-block;
+    padding: 5px 10px;
+    background: #ffad41;
+    color: white;
+    border-radius: 3px;
+    margin: 5px;
+    max-width: 80%;
+    overflow: hidden;
+  }
+  .message-content{
+    font-size: 16px;
+  }
+  #welcome{
+    font-size: 12px;
+    color: grey;
+    text-align: center;
+    margin-bottom: 14px;
+    margin-top: 60px;
+  }
+  .innerMessage.messageRight{
+    background: #ff6e3b;
+  }
+  .little-background-message{
+    width: 100%;
+  }
+  .elem button {
+    border-radius: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .elem {
+    position: relative;
+    min-width: 50px;
+  }
+  div#footer div.elem:first-child {
+    flex-grow: 1;
+  }
+  div#footer {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    background: white;
+    height: 50px;
+  }
+  ion-input{
+    padding-left: 15px;
+
+  }
+  #send{
+    background: url("../../assets/icon/001-paper-plane.png");
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;  }
+  .message:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .username{
+    color: grey;
+    font-size: 10px;
+  }
+  .messageLeft {
+    float: left;
+  }
+  .usernameLeft {
+    text-align: left;
+    margin-left: 10px;
+  }
+  .messageRight {
+    float: right;
+  }
+  .usernameRight{
+    text-align: right;
+    margin-right: 10px;
+  }
+  .toolbar-background {
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border: 0px !important;
+    border-bottom-color: transparent !important;
+    border-bottom: none !important;
+  }
+  #icon-burger{
+    color: white;
+  }
+  .toolbar-title{
+    color: white;
+  }
+  .content{
+    background: url("../../assets/imgs/bg-chat.png");
+    background-size: cover;
+  }
+}
