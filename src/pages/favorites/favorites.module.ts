@@ -8,6 +8,6 @@ import { FavoritesPage } from './favorites';
   ],
   imports: [
     IonicPageModule.forChild(FavoritesPage),
-  ],
+  ]
 })
 export class FavoritesPageModule {}

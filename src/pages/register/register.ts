@@ -1,23 +1,16 @@
 import {Component, NgZone} from '@angular/core';
 import {
   IonicPage, MenuController, NavController, NavParams, LoadingController, ToastController,
-  AlertController
+  AlertController, normalizeURL
 } from 'ionic-angular';
 import {User} from '../../models/user';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {HomePage} from "../home/home";
 import {Profile} from "../../models/profile";
 import {AngularFireDatabase} from "@angular/fire/database";
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {Subscription} from "rxjs/Rx";
-import {async} from "rxjs/internal/scheduler/async";
 import * as firebase from 'firebase';
 import {ChatPage} from "../chat/chat";
-import {ImgHandlerProvider} from "../../providers/imghandler/imghandler";
-import {LoginPage} from "../login/login";
-
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import {Camera} from "@ionic-native/camera/ngx";
 
 /**
  * Generated class for the RegisterPage page.
@@ -43,10 +36,9 @@ export class RegisterPage {
     themes: object;
     username: string;
 
+    myphoto: string;
   constructor(private afAuth: AngularFireAuth, private afDatabase: AngularFireDatabase, public navCtrl: NavController,
-              public navParams: NavParams, private channelManager: ChannelManagerProvider, public menuCtrl: MenuController,
-              public imgService: ImgHandlerProvider, public zone: NgZone,
-              public transfer: FileTransfer, public camera: Camera, public loadingCtrl: LoadingController,
+              private channelManager: ChannelManagerProvider, public menuCtrl: MenuController,
               public toastCtrl: ToastController, public alertCtrl: AlertController) {
     this.menuCtrl.enable(false, 'myMenu');
 
@@ -107,19 +99,4 @@ async register(user: User, profile: Profile) {
     alert.present();
   }
 
-openGallery () {
-    let cameraOptions = {
-        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-        destinationType: this.camera.DestinationType.FILE_URI,
-        quality: 100,
-        targetWidth: 1000,
-        targetHeight: 1000,
-        encodingType: this.camera.EncodingType.JPEG,
-        correctOrientation: true
-    };
-
-    this.camera.getPicture(cameraOptions)
-        .then(file_uri => this.imageURI = file_uri,
-            err => console.log(err));
-  }
 }

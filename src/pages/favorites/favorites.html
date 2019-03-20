@@ -9,12 +9,15 @@
     <button ion-button menuToggle>
       <ion-icon id="icon-burger" name="menu"></ion-icon>
     </button>
-    <ion-title>Favoris</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <button ion-item *ngFor="let user of favorites" (click)="onSelectFav(user)">
+  <h1 class="title">Contacts</h1>
+  <!--<button ion-item *ngFor="let user of favorites" (click)="onSelectFav(user)">-->
+    <!--{{user.username}}-->
+  <!--</button>-->
+  <div class="item-fav" *ngFor="let user of favorites" (click)="onSelectFav(user)">
     {{user.username}}
-  </button>
+  </div>
 </ion-content>

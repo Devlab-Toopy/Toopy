@@ -9,13 +9,10 @@
     <button ion-button menuToggle>
       <ion-icon id="icon-burger" name="menu"></ion-icon>
     </button>
-    <ion-title>Groupe</ion-title>
+    <ion-title>{{otherUser['username']}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <div *ngFor="let user of users">{{user['username']}}</div>
-</ion-content>
 <ion-content padding>
   <div id="chatMessage" #chatMessage>
 

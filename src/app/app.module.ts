@@ -21,19 +21,16 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { environment } from "../../.localenv";
 import { ChannelManagerProvider } from '../providers/channel-manager/channel-manager';
-import { ImgHandlerProvider } from "../providers/imghandler/imghandler";
 
 import {TimerComponent} from "../components/timer/timer";
 import {UsersChatComponent} from "../components/users-chat/users-chat";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {LoginPage} from "../pages/login/login";
 
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import { File } from '@ionic-native/file/ngx';
-import { Camera } from '@ionic-native/camera/ngx';
 import {FavoritesPage} from "../pages/favorites/favorites";
 import { PrivateChatProvider } from '../providers/private-chat/private-chat';
 import {PrivateChatPage} from "../pages/private-chat/private-chat";
+import {PrivateChatPageModule} from "../pages/private-chat/private-chat.module";
 
 let config = environment.config;
 
@@ -46,7 +43,6 @@ let config = environment.config;
     FavoritesPage,
     TimerComponent,
     UsersChatComponent,
-    PrivateChatPage
   ],
   imports: [
     BrowserModule,
@@ -55,7 +51,8 @@ let config = environment.config;
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
-    IonicSwipeAllModule
+    IonicSwipeAllModule,
+    PrivateChatPageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -70,15 +67,7 @@ let config = environment.config;
     IonicStorageModule,
     StatusBar,
     SplashScreen,
-    File,
-    FilePath,
-    FileChooser,
-    FileTransfer,
-    // FileUploadOptions,
-    // FileTransferObject,
-    Camera,
     ChannelManagerProvider,
-    ImgHandlerProvider,
     PrivateChatProvider,
   ]
 })

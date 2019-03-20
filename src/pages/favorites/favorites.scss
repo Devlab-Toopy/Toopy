@@ -1,3 +1,24 @@
 page-favorites {
-
+  ion-content{
+    background: url("../../assets/imgs/bg-contact.png");
+    background-size: cover;
+  }
+  .title{
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ff6e3b;
+    text-align: center;
+  }
+  .scroll-content{
+    padding: 0!important;
+  }
+  .item-fav{
+    width: 100%;
+    height: 80px;
+    padding-left: 50px;
+    display: flex;
+    align-items: center;
+    color: gray;
+    border-bottom: 0.5px solid rgba(50, 50, 50, 0.2);
+  }
 }

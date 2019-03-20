@@ -12,6 +12,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {Subscription} from "rxjs/Rx";
 import {ChannelManagerProvider} from "../providers/channel-manager/channel-manager";
+import {PrivateChatPage} from "../pages/private-chat/private-chat";
 
 @Component({
   templateUrl: 'app.html'

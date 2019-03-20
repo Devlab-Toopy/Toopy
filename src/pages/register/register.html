@@ -14,6 +14,8 @@
 </ion-header>
 
 <ion-content padding id="content-register">
+
+  <button ion-button (click)="getImage()">test image</button>
   <ion-item>
     <ion-label stacked>E-mail Adress</ion-label>
     <ion-input type="text" [(ngModel)]="user.email" value="alex2@toopy.fr"></ion-input>
@@ -30,15 +32,15 @@
   </ion-item>
 
 
-  <ion-item>
-    <ion-label stacked>First Name</ion-label>
-    <ion-input [(ngModel)]="profile.firstName" value="alex2" required></ion-input>
-  </ion-item>
+  <!--<ion-item>-->
+    <!--<ion-label stacked>First Name</ion-label>-->
+    <!--<ion-input [(ngModel)]="profile.firstName" value="alex2" required></ion-input>-->
+  <!--</ion-item>-->
 
-  <ion-item>
-    <ion-label stacked>Last Name</ion-label>
-    <ion-input [(ngModel)]="profile.lastName" value="alex2" required></ion-input>
-  </ion-item>
+  <!--<ion-item>-->
+    <!--<ion-label stacked>Last Name</ion-label>-->
+    <!--<ion-input [(ngModel)]="profile.lastName" value="alex2" required></ion-input>-->
+  <!--</ion-item>-->
 
   <ion-item>
     <ion-label stacked>Theme</ion-label>

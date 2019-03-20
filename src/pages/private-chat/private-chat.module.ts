@@ -9,5 +9,8 @@ import { PrivateChatPage } from './private-chat';
   imports: [
     IonicPageModule.forChild(PrivateChatPage),
   ],
+  exports: [
+    PrivateChatPage
+  ]
 })
 export class PrivateChatPageModule {}

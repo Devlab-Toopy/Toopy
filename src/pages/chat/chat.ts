@@ -6,6 +6,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import {UsersChatComponent} from "../../components/users-chat/users-chat";
 import {delay} from "rxjs/internal/operators";
+import {Subscription} from "rxjs/Rx";
 
 /**
  * Generated class for the ChatPage page.
@@ -29,7 +30,7 @@ export class ChatPage {
   currentUser: any;
 
   date: any;
-  subscriptionMessage;
+  subscriptionMessage : Subscription;
   messages: object[] = [];
   theme: string;
   channel: string;

@@ -24,7 +24,9 @@ export class FavoritesPage {
     console.log(usersObject);
     this.currentUser = this.channelManager.currentUserProfile;
     for(let user in usersObject){
-      this.favorites.push(usersObject[user]);
+      let userfav: object = usersObject[user];
+      userfav['uid'] = user;
+      this.favorites.push(userfav);
     }
     console.log(this.favorites);
   }
@@ -34,15 +36,13 @@ export class FavoritesPage {
   }
 
   onSelectFav(selectedUser) {
-    this.navCtrl.push(PrivateChatPage, {
-      users: [{
-        'uid' : this.currentUser['uid'],
-        'username' : this.currentUser['username']
-      },
+    this.navCtrl.push('PrivateChatPage', {
+      other_user:
         {
           'uid' : selectedUser['uid'],
-          'username' : selectedUser['username']
-        }]
+          'username' : selectedUser['username'],
+          'chatId' : selectedUser['chat']
+        }
     });
   }
 
