@@ -8,9 +8,14 @@
   <ion-content id="content-menu">
 
     <ion-list>
-      <div id="profile-picture"></div>
-      <div id="username">{{username}}</div>
-      <div id="theme">Theme : {{theme}}</div>
+      <div id="profile-picture">
+        <ion-spinner *ngIf="upload" name="crescent"></ion-spinner>
+        <img *ngIf="!upload" (click)="getImage()" src="{{currentUser.photoUrl}}" alt="">
+      </div>
+
+
+      <div id="username">{{currentUser.username}}</div>
+      <div id="theme">Theme : {{currentUser.theme}}</div>
       <button menuClose ion-item *ngFor="let page of pages" (click)="openPage(page)">
         {{page.title}}
       </button>

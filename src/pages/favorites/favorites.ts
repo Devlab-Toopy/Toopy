@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ChannelManagerProvider} from "../../providers/channel-manager/channel-manager";
 import {AngularFireDatabase} from "@angular/fire/database";
 import {PrivateChatPage} from "../private-chat/private-chat";
+import {Profile} from "../../models/profile";
+import {Favorite} from "../../models/favorite";
 
 /**
  * Generated class for the FavoritesPage page.
@@ -17,33 +19,25 @@ import {PrivateChatPage} from "../private-chat/private-chat";
   templateUrl: 'favorites.html',
 })
 export class FavoritesPage {
-  currentUser: object;
-  favorites: Array<object> = [];
+  currentUser = {} as Profile;
+  favorites: Array<Favorite> = [];
   constructor(public navCtrl: NavController, public navParams: NavParams, private channelManager: ChannelManagerProvider, public db: AngularFireDatabase) {
-    let usersObject = this.channelManager.currentUserProfile['favorites'];
-    console.log(usersObject);
+    let usersObject = this.channelManager.currentUserProfile.favorites;
     this.currentUser = this.channelManager.currentUserProfile;
+
     for(let user in usersObject){
-      let userfav: object = usersObject[user];
-      userfav['uid'] = user;
-      this.favorites.push(userfav);
+      let this_fav: Favorite = usersObject[user];
+      this.favorites.push(this_fav);
+      console.log(this_fav);
     }
-    console.log(this.favorites);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FavoritesPage');
   }
 
-  onSelectFav(selectedUser) {
-    this.navCtrl.push('PrivateChatPage', {
-      other_user:
-        {
-          'uid' : selectedUser['uid'],
-          'username' : selectedUser['username'],
-          'chatId' : selectedUser['chat']
-        }
-    });
+  onSelectFav(selectedUser: Favorite) {
+    this.navCtrl.push('PrivateChatPage', {selectedUser: selectedUser});
   }
 
 }

@@ -4,6 +4,7 @@ import {AngularFireDatabase} from "@angular/fire/database";
 import {Subject} from "rxjs/Rx";
 import { map } from 'rxjs/operators';
 import * as firebase from 'firebase';
+import {Profile} from "../../models/profile";
 
 /*
   Generated class for the ChannelManagerProvider provider.
@@ -19,9 +20,9 @@ export class ChannelManagerProvider {
   public themeSubject: Subject<object> = new Subject<object>();
   public channelUsersSubject: Subject<object> = new Subject<object>();
   public allChannelSubject: Subject<object> = new Subject<object>();
-  public currentUserSubject: Subject<object> = new Subject<object>();
+  public currentUserSubject: Subject<Profile> = new Subject<Profile>();
   public timerSubject: Subject<object> = new Subject<object>();
-  public channelUsers: object;
+  public channelUsers: Array<Profile>;
   public channelObject: object;
   date: object;
   subscriptionMessage;
@@ -31,7 +32,7 @@ export class ChannelManagerProvider {
   public theme: string;
   public channels: object;
   public currentUser: object;
-  public currentUserProfile: object;
+  public currentUserProfile = {} as Profile;
   public activeChannels: Array<object>;
   public timerCount: number;
   public timerMin: number;
@@ -48,7 +49,7 @@ export class ChannelManagerProvider {
     this.themeSubject.next(themes);
   }
 
-  public emitChannelUsersSubject(users: object){
+  public emitChannelUsersSubject(users: Array<Profile>){
     this.channelUsersSubject.next(users);
   }
 
@@ -58,13 +59,18 @@ export class ChannelManagerProvider {
 
   public getCurrentUser(){
     this.currentUser = firebase.auth().currentUser;
+    console.log(this.currentUser);
     this.subscriptionMessage = this.db.object(`profile/${this.currentUser['uid']}`).snapshotChanges().map(action => {
-      const uid = action.payload.key;
-      const data = { uid, ...action.payload.val() };
+      const data = action.payload.val();
       return data;
-    }).subscribe(profile => {
-      this.currentUserProfile = profile;
-      console.log(this.currentUserProfile);
+    })
+    .subscribe(profile => {
+      this.currentUserProfile.photoUrl = profile['photoUrl'];
+      this.currentUserProfile.username = profile['username'];
+      this.currentUserProfile.uid = profile['uid'];
+      this.currentUserProfile.theme = profile['theme'];
+      this.currentUserProfile.favorites = profile['favorites'];
+      this.currentUserProfile.channel = profile['channel'];
       this.currentUserSubject.next(this.currentUserProfile);
     })
   }
@@ -105,7 +111,6 @@ export class ChannelManagerProvider {
         let uid = user['key'];
         this.db.object(`/profile/${uid}`).snapshotChanges().subscribe(profile => {
           let data = profile.payload.val();
-          data = Object.assign(data, {'uid' : uid, 'username' : user.payload.val()});
           channelUsers.push(data);
         });
       }

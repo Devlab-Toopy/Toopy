@@ -1,13 +1,18 @@
 // http://ionicframework.com/docs/theming/
 
 #profile-picture{
-  width: 150px;
-  height: 150px;
-  border-radius: 100px;
-  background: url(../assets/imgs/avatar-empty.jpeg);
-  background-position: center;
-  background-size: contain;
-  margin: 40px auto 0 auto;
+  width: 100%;
+  height: 200px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    width: 150px;
+    height: 150px;
+    margin-top: 40px;
+    border-radius: 100px;
+  }
 }
 
 .toolbar-background {

@@ -14,8 +14,11 @@
 </ion-header>
 
 <ion-content padding id="content-register">
-
-  <button ion-button (click)="getImage()">test image</button>
+  <div class="profile-picture" *ngIf="!hadPP">
+    <ion-icon (click)="getImage()" *ngIf="!upload" name="add"></ion-icon>
+    <ion-spinner *ngIf="upload" name="crescent"></ion-spinner>
+  </div>
+  <img *ngIf="hadPP" src="{{imageUrl}}" alt="">
   <ion-item>
     <ion-label stacked>E-mail Adress</ion-label>
     <ion-input type="text" [(ngModel)]="user.email" value="alex2@toopy.fr"></ion-input>
@@ -31,32 +34,12 @@
     <ion-input [(ngModel)]="profile.username" value="alex2"></ion-input>
   </ion-item>
 
-
-  <!--<ion-item>-->
-    <!--<ion-label stacked>First Name</ion-label>-->
-    <!--<ion-input [(ngModel)]="profile.firstName" value="alex2" required></ion-input>-->
-  <!--</ion-item>-->
-
-  <!--<ion-item>-->
-    <!--<ion-label stacked>Last Name</ion-label>-->
-    <!--<ion-input [(ngModel)]="profile.lastName" value="alex2" required></ion-input>-->
-  <!--</ion-item>-->
-
   <ion-item>
     <ion-label stacked>Theme</ion-label>
     <ion-select [(ngModel)]="profile.theme" required>
       <ion-option *ngFor="let theme of themes" value="{{theme}}">{{theme}}</ion-option>
     </ion-select>
   </ion-item>
-
-    <!--<ion-item>-->
-      <!--<p>{{imageURI}}</p>-->
-      <!--<button ion-button color="secondary" (click)="openGallery()">Get Image</button>-->
-    <!--</ion-item>-->
-    <!--<ion-item>-->
-      <!--<h4>Image Preview</h4>-->
-      <!--<img src="{{file_uri}}" *ngIf="file_uri" alt="Ionic File" width="300" />-->
-    <!--</ion-item>-->
 
   <button id="register-button" ion-button (click)="register(user, profile)">Register</button>
 

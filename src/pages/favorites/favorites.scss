@@ -20,5 +20,10 @@ page-favorites {
     align-items: center;
     color: gray;
     border-bottom: 0.5px solid rgba(50, 50, 50, 0.2);
+    img{
+      width: 45px;
+      margin-right: 25px;
+      border-radius: 25px;
+    }
   }
 }

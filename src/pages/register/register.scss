@@ -51,4 +51,24 @@ page-register {
   button{
     height: 90px;
   }
+  img{
+    width: 200px;
+    height: 200px;
+    border-radius: 120px;
+    margin: 0 auto;
+  }
+  .profile-picture{
+    width: 200px;
+    height: 200px;
+    background: rgba(200,200,200,0.2);
+    border-radius: 120px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ion-icon{
+      font-size: 100px;
+      color: rgba(200,200,200,0.5);
+    }
+  }
 }

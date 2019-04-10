@@ -6,6 +6,7 @@ import {ChatPage} from "../chat/chat";
 import {HomePage} from "../home/home";
 import { IonicStorageModule } from '@ionic/storage';
 import {default as firebase, storage} from "firebase";
+import {first} from "rxjs/internal/operators";
 /**
  * Generated class for the LoginPage page.
  *
@@ -30,7 +31,22 @@ export class LoginPage {
               public menuCtrl: MenuController, public storage: IonicStorageModule,
               public alertCtrl: AlertController) {
 
-      this.menuCtrl.enable(false, 'myMenu');
+    this.menuCtrl.enable(false, 'myMenu');
+    this.doSomething();
+  }
+
+  isLoggedIn() {
+    return this.afAuth.authState.pipe(first()).toPromise();
+  }
+
+  async doSomething() {
+    const user = await this.isLoggedIn();
+    if (user) {
+      console.log('already log in');
+      this.navCtrl.setRoot(ChatPage);
+    } else {
+      console.log('not log in yet');
+    }
   }
 
   ionViewDidLoad(){
@@ -39,12 +55,10 @@ export class LoginPage {
 
   }
 
-
   async login(user: User) {
       // storage.set('name', 'Max');
          this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
            .then((res) => {
-           console.log("that's good");
                this.navCtrl.setRoot(ChatPage);
            })
            .catch((err)=> {

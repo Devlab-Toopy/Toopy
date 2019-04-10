@@ -11,12 +11,20 @@ import {ChannelManagerProvider} from "../../providers/channel-manager/channel-ma
 import {AngularFireDatabase} from "@angular/fire/database";
 import {AlertController} from "ionic-angular";
 import {PrivateChatProvider} from "../../providers/private-chat/private-chat";
+import {Profile} from "../../models/profile";
+import {FavoritesManagerProvider} from "../../providers/favorites-manager/favorites-manager";
 /**
  * Generated class for the UsersChatComponent component.
  *
  * See https://angular.io/api/core/Component for more info on Angular
  * Components.
  */
+interface newFavorite {
+  uid: string,
+  username: string,
+  photoUrl: string,
+}
+
 @Component({
   selector: 'users-chat',
   templateUrl: 'users-chat.html',
@@ -41,42 +49,48 @@ import {PrivateChatProvider} from "../../providers/private-chat/private-chat";
 })
 export class UsersChatComponent {
   ChannelUsersSubscription: Subscription;
-  users : object;
+  favoriteRequestsSubscription: Subscription;
+  users : Array<Profile> = [];
   text: string;
   calculatedTop: number=-320;
   click: boolean = false;
   isOpen:boolean = false;
   state: string = 'closed';
   userFocus: boolean = false;
-  selectedUser: object;
+  selectedUser = {} as Profile;
   favorite: boolean = false;
-  currentUser: object;
-
-  constructor(private channelManager: ChannelManagerProvider, public db: AngularFireDatabase, public alertCtrl: AlertController, private PrivateChat: PrivateChatProvider) {
+  currentUser = {} as Profile;
+  favoriteRequests: Array<newFavorite> = [];
+  favoriteRequestsUid: Array<string> =[];
+  favoriteRequest: boolean = false;
+  constructor(private channelManager: ChannelManagerProvider,
+              public db: AngularFireDatabase,
+              public alertCtrl: AlertController,
+              private favoriteManager: FavoritesManagerProvider) {
     this.ChannelUsersSubscription = this.channelManager.channelUsersSubject.subscribe(data => {
-      this.users = data;
-      this.selectedUser = {'username ' : 'user'};
+      this.users = this.channelManager.channelUsers;
       this.currentUser = this.channelManager.currentUserProfile;
+      this.favoriteManager.getFavoriteRequests(this.currentUser);
+    });
+    this.favoriteRequestsSubscription = this.favoriteManager.favoriteRequestsSubject.subscribe( (data: Array<newFavorite>) => {
+      this.favoriteRequests = data;
+      for (let request of this.favoriteRequests) {
+        this.favoriteRequestsUid.push(request.uid);
+      }
     })
   }
 
-  onAddFavorite(user){
-    this.db.object(`/profile/${this.currentUser['uid']}/favorites`).update({[user['uid']] : {"username" : user['username']}}).then(() => {
-      this.favorite = true;
-      this.popUp(`L'utilisateur ${user['username']} a bien été ajouté aux favoris ! `);
+  onAddFavorite(user: Profile){
+      this.favoriteManager.askToAddFavorite(user, this.currentUser);
+      this.popUp(`Une demande à été envoyé à ${user.username}, vous pourrez discutez lorsqu'il acceptera votre invitation ! `);
       this.selectedUser = user;
-      this.db.object(`/profile/${user['uid']}/favorites`).update({[this.currentUser['uid']] : {"username" : this.currentUser['username']}});
-      this.PrivateChat.openChat(this.currentUser, user);
-    });
   }
 
-  onRemoveFavorite(user){
-    console.log(user);
-    this.db.object(`/profile/${this.currentUser['uid']}/favorites/${user['uid']}`).remove().then(() => {
-      this.favorite = false;
-      this.popUp(`L'utilisateur ${user['username']} a bien été enlevé des favoris ! `);
-      this.selectedUser = user;
-    });
+  onRemoveFavorite(user: Profile){
+    this.favoriteManager.deleteFavorite(user, this.currentUser);
+    this.favorite = false;
+    this.popUp(`L'utilisateur ${user['username']} a bien été enlevé des favoris ! `);
+    this.selectedUser = user;
   }
 
   async popUp(message: string) {
@@ -105,9 +119,10 @@ export class UsersChatComponent {
     this.isOpen = !this.isOpen;
   }
 
-  focusUser(user){
+  focusUser(user: Profile){
     this.userFocus = true;
     this.selectedUser = user;
+    console.log(this.selectedUser);
     let favorite = this.db.object(`profile/${this.currentUser['uid']}/favorites/${user['uid']}`).valueChanges().subscribe((data) =>{
       if(data){
         this.favorite = true;
@@ -118,5 +133,26 @@ export class UsersChatComponent {
   }
   closeFocusUser(){
     this.userFocus = false;
+  }
+
+  acceptFavorite(user: Profile) {
+    const confirm = this.alertCtrl.create({
+      title: 'Ajout de favoris',
+      message: `Vous allez ajouter ${user.username} en favoris. Vous pourrez discuter avec cette personne dans la partie Favoris`,
+      buttons: [
+        {
+          text: 'Decliner',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Valider',
+          handler: () => {
+            this.favoriteManager.addFavorite(user, this.currentUser);
+          }
+        }
+      ]
+    });
+    confirm.present();    // this.favoriteManager.addFavorite()
   }
 }

@@ -101,12 +101,6 @@ export class TimerComponent {
     }else{
       this.secs = secs.toString()
     }
-    // return [
-    //   days + 'd',
-    //   hours + 'h',
-    //   mins + 'm',
-    //   secs + 's'
-    // ].join(' ');
   }
 
 

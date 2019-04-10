@@ -18,6 +18,7 @@
     <!--{{user.username}}-->
   <!--</button>-->
   <div class="item-fav" *ngFor="let user of favorites" (click)="onSelectFav(user)">
-    {{user.username}}
+    <img src="{{user.photoUrl}}" alt="">
+    <p>{{user.username}}</p>
   </div>
 </ion-content>

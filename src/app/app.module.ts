@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import { IonicSwipeAllModule } from 'ionic-swipe-all';
 
 import { MyApp } from './app.component';
@@ -26,11 +26,15 @@ import {TimerComponent} from "../components/timer/timer";
 import {UsersChatComponent} from "../components/users-chat/users-chat";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {LoginPage} from "../pages/login/login";
+import { Camera } from '@ionic-native/camera';//import in app.module.ts
 
 import {FavoritesPage} from "../pages/favorites/favorites";
 import { PrivateChatProvider } from '../providers/private-chat/private-chat';
 import {PrivateChatPage} from "../pages/private-chat/private-chat";
 import {PrivateChatPageModule} from "../pages/private-chat/private-chat.module";
+import {LoginPageModule} from "../pages/login/login.module";
+import {ParametersPage} from "../pages/parameters/parameters";
+import { FavoritesManagerProvider } from '../providers/favorites-manager/favorites-manager';
 
 let config = environment.config;
 
@@ -41,6 +45,7 @@ let config = environment.config;
     ListPage,
     ChatPage,
     FavoritesPage,
+    ParametersPage,
     TimerComponent,
     UsersChatComponent,
   ],
@@ -53,6 +58,7 @@ let config = environment.config;
     BrowserAnimationsModule,
     IonicSwipeAllModule,
     PrivateChatPageModule,
+    LoginPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -60,8 +66,10 @@ let config = environment.config;
     HomePage,
     ListPage,
     ChatPage,
+    LoginPage,
     FavoritesPage,
-    PrivateChatPage
+    PrivateChatPage,
+    ParametersPage
   ],
   providers: [
     IonicStorageModule,
@@ -69,6 +77,8 @@ let config = environment.config;
     SplashScreen,
     ChannelManagerProvider,
     PrivateChatProvider,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    FavoritesManagerProvider,
   ]
 })
 export class AppModule {}

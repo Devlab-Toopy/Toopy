@@ -24,7 +24,18 @@ users-chat {
       text-align: center;
       font-size: 16px;
       height: 180px;
-      div{
+      #isFavoriteRequest{
+         margin: 0;
+         font-weight: 600;
+       }
+      span{
+        .favoriteRequestNotif{
+          width: 10px;
+          height: 10px;
+          background: red;
+        }
+      }
+      .user{
         margin-bottom: 15px;
       }
     }
@@ -49,10 +60,12 @@ users-chat {
           width: 150px;
           height: 150px;
           border-radius: 100px;
-          background: url(../../assets/imgs/avatar-empty.jpeg);
-          background-position: center;
-          background-size: contain;
           margin: 20px auto 0 auto;
+        img{
+          width: 150px;
+          height: 150px;
+          border-radius: 100px;
+        }
       }
     }
   }
