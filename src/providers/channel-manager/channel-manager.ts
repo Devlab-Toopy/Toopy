@@ -59,7 +59,6 @@ export class ChannelManagerProvider {
 
   public getCurrentUser(){
     this.currentUser = firebase.auth().currentUser;
-    console.log(this.currentUser);
     this.subscriptionMessage = this.db.object(`profile/${this.currentUser['uid']}`).snapshotChanges().map(action => {
       const data = action.payload.val();
       return data;
@@ -97,7 +96,6 @@ export class ChannelManagerProvider {
       return data;
     }).subscribe(timer => {
       this.timerCount = timer['TimerCount'];
-      console.log(this.timerCount);
       this.timerMin = timer['TimerMin'];
       this.timerSubject.next();
     })
@@ -107,7 +105,6 @@ export class ChannelManagerProvider {
     this.subscriptionMessage = this.db.list(`Channels/${channel}/users`).snapshotChanges().subscribe(users => {
       let channelUsers = [];
       for(let user of users){
-        console.log(user.payload.val());
         let uid = user['key'];
         this.db.object(`/profile/${uid}`).snapshotChanges().subscribe(profile => {
           let data = profile.payload.val();
@@ -115,7 +112,6 @@ export class ChannelManagerProvider {
         });
       }
       this.channelUsers = channelUsers;
-      console.log(this.channelUsers);
       this.emitChannelUsersSubject(this.channelUsers);
     })
   }
@@ -161,7 +157,6 @@ export class ChannelManagerProvider {
     }
     this.db.object(`/profile/${user['uid']}`).update({channel: name});
     this.db.object(`/profile/${user['uid']}`).update({theme: theme});
-    console.log(user);
   }
 
   public createChannel(theme: string, user:object)
@@ -219,8 +214,6 @@ export class ChannelManagerProvider {
         'active' : 'true',
         'users' : {[user['uid']]: user['username']},
       };
-    console.log(newChannelName);
-    console.log(channel);
     this.db.object(`/profile/${user['uid']}`).update({channel: newChannelName});
     this.db.object(`/profile/${user['uid']}`).update({theme: theme});
     this.db.object(`/Channels`).update({[newChannelName]: channel});
@@ -230,14 +223,18 @@ export class ChannelManagerProvider {
   changeChannel(theme: string, user: object, newUser: boolean){
     let newchannel = true;
     let keys = [];
-    console.log(user);
-    console.log(this.activeChannels);
     for(let channel of this.activeChannels)
     {
+      let usernumber: number;
+      if (channel['data']['users']) {
+        usernumber = Object.keys(channel['data']['users']).length;
+      } else {
+        usernumber = 0;
+      }
       if(channel['data']['theme'] == theme){
         let initdate = new Date(channel['data']['init']['date'].toString());
         let delta = (Date.now() - initdate.getTime())/86400000;
-        if(delta < this.timerMin){
+        if(delta < this.timerMin && usernumber < 11){
           if(!newUser){
             this.moveChannelToPast();
           }

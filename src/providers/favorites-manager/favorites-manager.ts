@@ -24,9 +24,7 @@ export class FavoritesManagerProvider {
 
   public favoriteRequests: Array<newFavorite>;
 
-  constructor(public db: AngularFireDatabase, private PrivateChat: PrivateChatProvider) {
-    console.log('Hello FavoritesManagerProvider Provider');
-  }
+  constructor(public db: AngularFireDatabase, private PrivateChat: PrivateChatProvider) {}
 
   public emitFavoriteRequestsSubject(favoriteRequests: Array<newFavorite>){
     this.favoriteRequestsSubject.next(favoriteRequests);

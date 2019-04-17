@@ -62,6 +62,7 @@ export class UsersChatComponent {
   currentUser = {} as Profile;
   favoriteRequests: Array<newFavorite> = [];
   favoriteRequestsUid: Array<string> =[];
+  isRequested: boolean = false;
   favoriteRequest: boolean = false;
   constructor(private channelManager: ChannelManagerProvider,
               public db: AngularFireDatabase,
@@ -77,6 +78,7 @@ export class UsersChatComponent {
       for (let request of this.favoriteRequests) {
         this.favoriteRequestsUid.push(request.uid);
       }
+      console.log(this.favoriteRequestsUid);
     })
   }
 
@@ -122,11 +124,20 @@ export class UsersChatComponent {
   focusUser(user: Profile){
     this.userFocus = true;
     this.selectedUser = user;
-    console.log(this.selectedUser);
-    let favorite = this.db.object(`profile/${this.currentUser['uid']}/favorites/${user['uid']}`).valueChanges().subscribe((data) =>{
+    console.log(this.favoriteRequestsUid);
+    console.log(this.selectedUser.uid);
+    console.log(this.favoriteRequestsUid.includes(this.selectedUser.uid));
+    if (this.favoriteRequestsUid.includes(this.selectedUser.uid)) {
+      this.isRequested = true;
+    } else {
+      this.isRequested = false;
+    }
+    this.db.object(`profile/${this.currentUser['uid']}/favorites/${this.selectedUser.uid}`).valueChanges().subscribe((data) =>{
       if(data){
+        console.log('is favorite');
         this.favorite = true;
       }else{
+        console.log('not favorite');
         this.favorite = false;
       }
     });

@@ -53,8 +53,29 @@ users-chat {
       }
       .favorite{
         position: relative;
-        left: 30px;
         font-size: 30px;
+        margin-top: 20px;
+        .not-favorite {
+          width: 25px;
+          height: 25px;
+          background: url("../../assets/icon/add.png");
+          background-size: contain;
+          margin: 0 auto;
+        }
+        .favorite-icon {
+          width: 65px;
+          height: 35px;
+          background: url("../../assets/icon/favorite.png");
+          background-size: contain;
+          margin: 0 auto;
+        }
+        .await-favorite {
+          width: 65px;
+          height: 35px;
+          background: url("../../assets/icon/await-favorite.png");
+          background-size: contain;
+          margin: 0 auto;
+        }
       }
       #picture{
           width: 150px;

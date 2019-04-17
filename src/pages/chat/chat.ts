@@ -61,16 +61,7 @@ export class ChatPage {
             this.channelManager.channelObject = this.channelObject;
           })
         });
-        // this.toast.create({
-        //   message: 'WELCOME',
-        //   duration: 2000
-        // }).present();
     });
-    this.afAuth.idToken.subscribe( data => {
-      console.log(data);
-    })
-    // this.username = this.navParams.get('username');
-    // this.user = this.navParams.get('user');
     this.menuCtrl.enable(true, 'myMenu');
   }
 
@@ -91,9 +82,5 @@ export class ChatPage {
     });
     this.message = '';
   }
-
-  // this.subscriptionMessage = this.db.list('Californie/init').valueChanges().subscribe(data => {
-  //   this.date = data;
-  // });
 
 }

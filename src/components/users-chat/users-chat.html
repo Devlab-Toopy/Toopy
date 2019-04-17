@@ -1,29 +1,36 @@
 <!-- Generated template for the UsersChatComponent component -->
   <div id="users-chat">
-      <div  id="background-users-chat" [@openClose]="isOpen ? 'open' : 'closed'" [style.top.px]="calculatedTop"></div>
-      <div id="content-users" swipeAll (swipeup)="swipeUp()" [@openClose]="{value: isOpen ? 'open' : 'closed', calculatedTop : calculatedTop}" [style.top.px]="calculatedTop">
-        <div id="users-chat-mode" *ngIf="!userFocus">
-          <div id="users-list">
-            <div (click)="focusUser(user)" *ngFor="let user of users" class="user">
-              <span *ngIf="favoriteRequestsUid.includes(user.uid)" id="isFavoriteRequest">{{user.username}}
-                <!--<div class="favoriteRequestNotif"></div>-->
-              </span>
-              <span *ngIf="!favoriteRequestsUid.includes(user.uid)">{{user.username}}</span>
+      <div  id="background-users-chat" [@openClose]="isOpen ? 'open' : 'closed'" [style.top.px]="calculatedTop">
+        <div id="content-users" swipeAll (swipeup)="swipeUp()" [@openClose]="{value: isOpen ? 'open' : 'closed', calculatedTop : calculatedTop}" [style.top.px]="calculatedTop">
+          <div id="users-chat-mode" *ngIf="!userFocus">
+            <div id="users-list">
+              <div (click)="focusUser(user)" *ngFor="let user of users" class="user">
+                <span *ngIf="favoriteRequestsUid.includes(user.uid)" id="isFavoriteRequest">{{user.username}}</span>
+                <span *ngIf="!favoriteRequestsUid.includes(user.uid)">{{user.username}}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div id="user-focus-mode" *ngIf="userFocus">
-          <ion-icon id="close" (click)="closeFocusUser()" name="close"></ion-icon>
-          <p>{{selectedUser.username}}</p>
-          <div id="picture">
-            <img *ngIf="!favoriteRequestsUid.includes(selectedUser.uid)" src="{{selectedUser.photoUrl}}" alt="">
-            <img *ngIf="favoriteRequestsUid.includes(selectedUser.uid)" src="{{selectedUser.photoUrl}}" alt="" (click)="acceptFavorite(selectedUser)">
+          <div id="user-focus-mode" *ngIf="userFocus">
+            <ion-icon id="close" (click)="closeFocusUser()" name="close"></ion-icon>
+            <p>{{selectedUser.username}}</p>
+            <div id="picture">
+              <img src="{{selectedUser.photoUrl}}" alt="">
+              <!--<img *ngIf="favoriteRequestsUid.includes(selectedUser.uid)" src="{{selectedUser.photoUrl}}" alt="" (click)="acceptFavorite(selectedUser)">-->
+            </div>
+            <div class="favorite" *ngIf="!favorite">
+              <div class="not-favorite" *ngIf="!isRequested" (click)="onAddFavorite(selectedUser)"></div>
+              <div class="await-favorite" *ngIf="isRequested" (click)="acceptFavorite(selectedUser)"></div>
+            </div>
+            <div class="favorite" *ngIf="favorite">
+              <div class="favorite-icon" (click)="onRemoveFavorite(selectedUser)"></div>
+            </div>
           </div>
-          <ion-icon *ngIf="!favorite" class="favorite" name="star-outline" (click)="onAddFavorite(selectedUser)"></ion-icon>
-          <ion-icon *ngIf="favorite" class="favorite" name="star" (click)="onRemoveFavorite(selectedUser)"></ion-icon>
-        </div>
-        <timer [hidden]="userFocus"></timer>
-      <div id="content-swipe" swipeAll (swipedown)="swipeDown()"></div>
-      <div id="icon-group" (click)="toggle()"></div>
+            <!--<ion-icon *ngIf="!favorite" class="favorite" name="star-outline" (click)="onAddFavorite(selectedUser)"></ion-icon>-->
+            <!--<ion-icon *ngIf="favorite" class="favorite" name="star" (click)="onRemoveFavorite(selectedUser)"></ion-icon>-->
+          <timer [hidden]="userFocus"></timer>
+          </div>
+        <div id="content-swipe" swipeAll (swipedown)="swipeDown()"></div>
+        <div id="icon-group" (click)="toggle()"></div>
+      </div>
   </div>
-</div>
+
